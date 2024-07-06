@@ -55,11 +55,11 @@ void construct_tri(Triangle* const t, uint32_t const a, uint32_t const b, uint32
     DEBUG_ASSERT(isValid_tri(t))
 }
 
-void dump_tri(Triangle const* const t) {
+void dump_tri(Triangle const* const t, int const padding) {
     DEBUG_ASSERT(isValid_tri(t))
     printf(
-        "perimeter = %"PRIu64"\t(%"PRIu32", %"PRIu32", %"PRIu32")\n",
-        perimeter_tri(t), (*t)[0], (*t)[1], (*t)[2]
+        "perimeter = %"PRIu64"\t(%*"PRIu32", %*"PRIu32", %*"PRIu32")\n",
+        perimeter_tri(t), padding, (*t)[0], padding, (*t)[1], padding, (*t)[2]
     );
 }
 

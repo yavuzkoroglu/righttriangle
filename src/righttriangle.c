@@ -28,56 +28,71 @@ int main(int argc, char* argv[]) {
     puts("");
 
     if (argc < 2) {
-        printf("  Usage: %s <depth>\n", argv[0]);
+        printf("  Usage: %s <max_perimeter>\n", argv[0]);
         puts("");
         return EXIT_SUCCESS;
     }
 
-    uint32_t depth;
-    if (sscanf(argv[1], "%"SCNu32, &depth) != 1) {
-        puts("  <depth> must be a positive integer!");
+    uint64_t max_perimeter;
+    if (sscanf(argv[1], "%"SCNu64, &max_perimeter) != 1) {
+        puts("  <max_perimeter> must be a positive integer!");
         puts("");
         return EXIT_FAILURE;
     }
 
-    if (depth == 0) {
+    if (max_perimeter < 12) {
         return EXIT_SUCCESS;
     }
 
-    CREATE_EMPTY_STACK(RightTriangle, stack, depth)
+    uint32_t max_side_len = 0;
+    CREATE_EMPTY_STACK(RightTriangle, stack, BUFSIZ)
 
     PUSH_STACK_N(RightTriangle, RightTriangle* const first, stack)
 
     construct_rtri(first, 3, 4, 5);
-
-    for (uint32_t d = 1; d < depth; d++) {
+    RightTriangle* next;
+    do {
         PEEK_STACK(RightTriangle const* const t, stack)
-        PUSH_STACK_N(RightTriangle, RightTriangle* const next, stack)
+        DEBUG_ASSERT(isValid_tri(t))
+        PUSH_STACK_N(RightTriangle, next, stack)
         next_rtri(next, t);
-    }
+    } while (perimeter_tri(next) <= max_perimeter);
+    POP_STACK(stack)
 
-    for (uint32_t j = 0; j < depth; j++) {
+    for (uint32_t j = stack_size - 1; j != UINT32_MAX; j--) {
         RightTriangle const* const t = stack + j;
         DEBUG_ASSERT(isValid_rtri(t))
 
         RightTriangle base[1];
         clone_tri(base, t);
 
-        for (uint32_t k = 2; k <= depth + 1; k++) {
-            PUSH_STACK_N(RightTriangle, RightTriangle* const next, stack)
-            nextMult_rtri(next, base, k);
-        }
+        uint32_t k = 2;
+        RightTriangle* nextM;
+        do {
+            PUSH_STACK_N(RightTriangle, nextM, stack)
+            nextMult_rtri(nextM, base, k);
+            k++;
+        } while (perimeter_tri(nextM) <= max_perimeter);
+        POP_STACK(stack)
     }
 
     qsort(stack, stack_size, sizeof(RightTriangle), compare_tri);
+    for (uint32_t i = 0; i < stack_size; i++) {
+        RightTriangle const* const t = stack + i;
+        DEBUG_ASSERT(isValid_tri(t))
+
+        if ((*t)[2] > max_side_len)
+            max_side_len = (*t)[2];
+    }
 
     int const n = nDigits(stack_size);
+    int const m = nDigits(max_side_len);
     for (uint32_t i = 0; i < stack_size; i++) {
-        RightTriangle* const t = stack + i;
+        RightTriangle const* const t = stack + i;
         DEBUG_ASSERT(isValid_rtri(t))
 
-        printf(" %.*"PRIu32": ", n, i + 1);
-        dump_tri(t);
+        printf(" %*"PRIu32": ", n, i + 1);
+        dump_tri(t, m);
     }
 
     FREE_STACK(stack)

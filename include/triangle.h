@@ -43,8 +43,9 @@
     /**
      * @brief Dumps a Triangle to the standard output.
      * @param t A pointer to the constant Triangle.
+     * @param padding The left-padding amount.
      */
-    void dump_tri(Triangle const* const t);
+    void dump_tri(Triangle const* const t, int const padding);
 
     /**
      * @brief Frees a Triangle.
