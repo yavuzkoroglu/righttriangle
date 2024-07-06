@@ -12,9 +12,13 @@ bool areEqual_tri(Triangle const* const t1, Triangle const* const t2) {
     DEBUG_ASSERT(isValid_tri(t1))
     DEBUG_ASSERT(isValid_tri(t2))
 
-    return
-        (t1 == t2)                                                              ||
-        ((*t1)[0] == (*t2)[0] && (*t1)[1] == (*t2)[1] && (*t1)[2] == (*t2)[2]);
+    if (t1 == t2)
+        return 1;
+
+    if ((*t1)[0] == (*t2)[0] && (*t1)[1] == (*t2)[1] && (*t1)[2] == (*t2)[2])
+        return 1;
+
+    return 0;
 }
 
 void clone_tri(Triangle* const clone, Triangle const* const original) {
@@ -33,25 +37,35 @@ int compare_tri(void const* a, void const* b) {
     DEBUG_ASSERT(isValid_tri(t1))
     DEBUG_ASSERT(isValid_tri(t2))
 
+    if (a == b) return 0;
+
     uint64_t const p[2] = { perimeter_tri(t1), perimeter_tri(t2) };
 
-    return (p[0] == p[1])
-        ? ((*t1)[0] == (*t2)[0])
-            ? ((*t1)[1] == (*t2)[2])
-                ? ((*t1)[2] == (*t2)[2])
-                    ? 0
-                    : ((*t2)[2] > (*t2)[2])
-                        ? 1
-                        : -1
-                : ((*t2)[1] > (*t2)[1])
-                    ? 1
-                    : -1
-            : ((*t1)[0] > (*t2)[0])
-                ? 1
-                : -1
-        : (p[0] > p[1])
-            ? 1
-            : -1;
+    if (p[0] == p[1]) {
+        if ((*t1)[0] == (*t2)[0]) {
+            if ((*t1)[1] == (*t2)[1]) {
+                if ((*t1)[2] == (*t2)[2]) {
+                    return 0;
+                } else if ((*t1)[2] > (*t2)[2]) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            } else if ((*t1)[1] > (*t2)[1]) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else if ((*t1)[0] > (*t2)[0]) {
+            return 1;
+        } else {
+            return -1;
+        }
+    } else if (p[0] > p[1]) {
+        return 1;
+    } else {
+        return -1;
+    }
 }
 
 void construct_tri(Triangle* const t, uint32_t const a, uint32_t const b, uint32_t const c) {
