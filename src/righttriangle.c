@@ -67,12 +67,11 @@ int main(int argc, char* argv[]) {
         clone_tri(base, t);
 
         uint32_t k = 2;
-        RightTriangle* nextM;
         do {
-            PUSH_STACK_N(RightTriangle, nextM, stack)
-            nextMult_rtri(nextM, base, k);
+            PUSH_STACK_N(RightTriangle, next, stack)
+            nextMult_rtri(next, base, k);
             k++;
-        } while (perimeter_tri(nextM) <= max_perimeter);
+        } while (perimeter_tri(next) <= max_perimeter);
         POP_STACK(stack)
     }
 
