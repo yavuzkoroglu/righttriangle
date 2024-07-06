@@ -84,7 +84,7 @@ void construct_tri(Triangle* const t, uint32_t const a, uint32_t const b, uint32
 void dump_tri(Triangle const* const t, int const padding) {
     DEBUG_ASSERT(isValid_tri(t))
     printf(
-        "perimeter = %"PRIu64"\t(%*"PRIu32", %*"PRIu32", %*"PRIu32")\n",
+        "perimeter = %"PRIu32"\t(%*"PRIu32", %*"PRIu32", %*"PRIu32")\n",
         perimeter_tri(t), padding, (*t)[0], padding, (*t)[1], padding, (*t)[2]
     );
 }
@@ -106,8 +106,11 @@ bool isValid_tri(Triangle const* const t) {
     return 1;
 }
 
-uint64_t perimeter_tri(Triangle const* const t) {
+uint32_t perimeter_tri(Triangle const* const t) {
     DEBUG_ASSERT(isValid_tri(t))
-
-    return (uint64_t)(*t)[0] + (uint64_t)(*t)[1] + (uint64_t)(*t)[2];
+    uint32_t const perimeter = (*t)[0] + (*t)[1] + (*t)[2];
+    DEBUG_ASSERT(perimeter > (*t)[0])
+    DEBUG_ASSERT(perimeter > (*t)[1])
+    DEBUG_ASSERT(perimeter > (*t)[2])
+    return perimeter;
 }

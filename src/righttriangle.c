@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
         PEEK_STACK(RightTriangle const* const t, stack)
         PUSH_STACK_N(RightTriangle, next, stack)
         next_rtri(next, t);
-    } while (perimeter_tri(next) <= (uint64_t)max_perimeter);
+    } while (perimeter_tri(next) <= max_perimeter);
     POP_STACK(stack)
 
     for (uint32_t j = stack_size - 1; j != UINT32_MAX; j--) {
@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
         do {
             PUSH_STACK_N(RightTriangle, next, stack)
             nextMult_rtri(next, base, k++);
-        } while (perimeter_tri(next) <= (uint64_t)max_perimeter);
+        } while (perimeter_tri(next) <= max_perimeter);
         POP_STACK(stack)
     }
 

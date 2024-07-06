@@ -63,5 +63,5 @@
      * @brief Calculates the perimeter of a Triangle.
      * @param t A pointer to the constant Triangle.
      */
-    uint64_t perimeter_tri(Triangle const* const t);
+    uint32_t perimeter_tri(Triangle const* const t);
 #endif
