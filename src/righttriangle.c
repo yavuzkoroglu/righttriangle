@@ -136,9 +136,9 @@ bool isValid_rtri(RightTriangle const* const t) {
     if (!isValid_tri(t))        return 0;
 
     uint64_t const sq[3] = {
-        (*t)[0] * (*t)[0],
-        (*t)[1] * (*t)[1],
-        (*t)[2] * (*t)[2]
+        (uint64_t)(*t)[0] * (uint64_t)(*t)[0],
+        (uint64_t)(*t)[1] * (uint64_t)(*t)[1],
+        (uint64_t)(*t)[2] * (uint64_t)(*t)[2]
     };
 
     if (sq[0] + sq[1] != sq[2]) return 0;
