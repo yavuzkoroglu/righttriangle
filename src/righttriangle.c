@@ -28,15 +28,13 @@ int main(int argc, char* argv[]) {
     puts("");
 
     if (argc < 2) {
-        printf("  Usage: %s <max_perimeter>\n", argv[0]);
-        puts("");
+        printf("  Usage: %s <max_perimeter>\n\n", argv[0]);
         return EXIT_SUCCESS;
     }
 
     uint64_t max_perimeter;
     if (sscanf(argv[1], "%"SCNu64, &max_perimeter) != 1) {
-        puts("  <max_perimeter> must be a positive integer!");
-        puts("");
+        puts("  <max_perimeter> must be a positive integer!\n");
         return EXIT_FAILURE;
     }
 
@@ -44,7 +42,6 @@ int main(int argc, char* argv[]) {
         return EXIT_SUCCESS;
     }
 
-    uint32_t max_side_len = 0;
     CREATE_EMPTY_STACK(RightTriangle, stack, BUFSIZ)
 
     PUSH_STACK_N(RightTriangle, RightTriangle* const first, stack)
@@ -53,7 +50,6 @@ int main(int argc, char* argv[]) {
     RightTriangle* next;
     do {
         PEEK_STACK(RightTriangle const* const t, stack)
-        DEBUG_ASSERT(isValid_tri(t))
         PUSH_STACK_N(RightTriangle, next, stack)
         next_rtri(next, t);
     } while (perimeter_tri(next) <= max_perimeter);
@@ -69,13 +65,14 @@ int main(int argc, char* argv[]) {
         uint32_t k = 2;
         do {
             PUSH_STACK_N(RightTriangle, next, stack)
-            nextMult_rtri(next, base, k);
-            k++;
+            nextMult_rtri(next, base, k++);
         } while (perimeter_tri(next) <= max_perimeter);
         POP_STACK(stack)
     }
 
     qsort(stack, stack_size, sizeof(RightTriangle), compare_tri);
+
+    uint32_t max_side_len = 0;
     for (uint32_t i = 0; i < stack_size; i++) {
         RightTriangle const* const t = stack + i;
         DEBUG_ASSERT(isValid_tri(t))
