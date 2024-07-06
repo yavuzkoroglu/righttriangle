@@ -12,13 +12,12 @@ bool areEqual_tri(Triangle const* const t1, Triangle const* const t2) {
     DEBUG_ASSERT(isValid_tri(t1))
     DEBUG_ASSERT(isValid_tri(t2))
 
-    if (t1 == t2)
-        return 1;
+    if (t1 == t2)               return 1;
+    if ((*t1)[0] != (*t2)[0])   return 0;
+    if ((*t1)[1] != (*t2)[1])   return 0;
+    if ((*t1)[2] != (*t2)[2])   return 0;
 
-    if ((*t1)[0] == (*t2)[0] && (*t1)[1] == (*t2)[1] && (*t1)[2] == (*t2)[2])
-        return 1;
-
-    return 0;
+    return 1;
 }
 
 void clone_tri(Triangle* const clone, Triangle const* const original) {
