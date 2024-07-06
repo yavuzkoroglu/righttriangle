@@ -18,11 +18,18 @@
     bool areEqual_tri(Triangle const* const t1, Triangle const* const t2);
 
     /**
-     * @brief Compares two Triangle objects.
-     * @param t1 A pointer to the constant first Triangle.
-     * @param t2 A pointer to the constant second Triangle.
+     * @brief Clones a Triangle.
+     * @param clone A pointer to the clone Triangle.
+     * @param original A pointer to the constant original Triangle.
      */
-    int compare_tri(Triangle const* const t1, Triangle const* const t2);
+    void clone_tri(Triangle* const clone, Triangle const* const original);
+
+    /**
+     * @brief Compares two Triangle objects.
+     * @param a A pointer to the constant first Triangle.
+     * @param b A pointer to the constant second Triangle.
+     */
+    int compare_tri(void const* a, void const* b);
 
     /**
      * @brief Constructs a Triangle.

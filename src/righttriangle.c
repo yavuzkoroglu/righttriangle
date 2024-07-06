@@ -3,8 +3,12 @@
  * @brief Implements RightTriangle functions.
  * @author Yavuz Koroglu
  */
+#include <inttypes.h>
 #include "padkit/debug.h"
+#include "padkit/stack.h"
 #include "righttriangle.h"
+
+static int nDigits(uint32_t x);
 
 void construct_rtri(
     RightTriangle* const t,
@@ -18,6 +22,77 @@ void construct_rtri(
     construct_tri(t, a, b, c);
 
     DEBUG_ASSERT(isValid_rtri(t))
+}
+
+int main(int argc, char* argv[]) {
+    puts("");
+
+    if (argc < 2) {
+        printf("  Usage: %s <depth>\n", argv[0]);
+        puts("");
+        return EXIT_SUCCESS;
+    }
+
+    uint32_t depth;
+    if (sscanf(argv[1], "%"SCNu32, &depth) != 1) {
+        puts("  <depth> must be a positive integer!");
+        puts("");
+        return EXIT_FAILURE;
+    }
+
+    if (depth == 0) {
+        return EXIT_SUCCESS;
+    }
+
+    CREATE_EMPTY_STACK(RightTriangle, stack, depth)
+
+    PUSH_STACK_N(RightTriangle, RightTriangle* const first, stack)
+
+    construct_rtri(first, 3, 4, 5);
+
+    for (uint32_t d = 1; d < depth; d++) {
+        PEEK_STACK(RightTriangle const* const t, stack)
+        PUSH_STACK_N(RightTriangle, RightTriangle* const next, stack)
+        next_rtri(next, t);
+    }
+
+    for (uint32_t j = 0; j < depth; j++) {
+        RightTriangle const* const t = stack + j;
+        DEBUG_ASSERT(isValid_rtri(t))
+
+        RightTriangle base[1];
+        clone_tri(base, t);
+
+        for (uint32_t k = 2; k <= depth + 1; k++) {
+            PUSH_STACK_N(RightTriangle, RightTriangle* const next, stack)
+            nextMult_rtri(next, base, k);
+        }
+    }
+
+    qsort(stack, stack_size, sizeof(RightTriangle), compare_tri);
+
+    int const n = nDigits(stack_size);
+    for (uint32_t i = 0; i < stack_size; i++) {
+        RightTriangle* const t = stack + i;
+        DEBUG_ASSERT(isValid_rtri(t))
+
+        printf(" %.*"PRIu32": ", n, i + 1);
+        dump_tri(t);
+    }
+
+    FREE_STACK(stack)
+
+    puts("");
+    return EXIT_SUCCESS;
+}
+
+static int nDigits(uint32_t x) {
+    int nDigits = 0;
+    while (x > 0) {
+        nDigits++;
+        x /= 10;
+    }
+    return nDigits;
 }
 
 void next_rtri(RightTriangle* const next, RightTriangle const* const t) {

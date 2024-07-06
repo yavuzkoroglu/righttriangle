@@ -3,7 +3,7 @@ include padkit/compile.mk
 INCLUDES=-Iinclude -Ipadkit/include
 OBJECTS=obj/righttriangle.o obj/triangle.o
 
-all: objects
+all: righttriangle
 
 .PHONY: all clean cleanobjects cleanpadkit documentation objects
 
@@ -42,3 +42,10 @@ padkit/compile.mk: padkit; $(make padkit/compile.mk)
 padkit/include/padkit.h: padkit; make -C padkit include/padkit.h
 
 padkit/lib/libpadkit.a: cleanlibpadkit padkit; make -C padkit lib/libpadkit.a
+
+righttriangle:                          \
+    bin                                 \
+    objects                             \
+    padkit/compile.mk                   \
+    padkit/lib/libpadkit.a              \
+	; ${COMPILE} ${OBJECTS} padkit/lib/libpadkit.a -o bin/righttriangle
