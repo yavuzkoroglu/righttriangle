@@ -36,7 +36,19 @@ int compare_tri(void const* a, void const* b) {
     uint64_t const p[2] = { perimeter_tri(t1), perimeter_tri(t2) };
 
     return (p[0] == p[1])
-        ? 0
+        ? ((*t1)[0] == (*t2)[0])
+            ? ((*t1)[1] == (*t2)[2])
+                ? ((*t1)[2] == (*t2)[2])
+                    ? 0
+                    : ((*t2)[2] > (*t2)[2])
+                        ? 1
+                        : -1
+                : ((*t2)[1] > (*t2)[1])
+                    ? 1
+                    : -1
+            : ((*t1)[0] > (*t2)[0])
+                ? 1
+                : -1
         : (p[0] > p[1])
             ? 1
             : -1;
