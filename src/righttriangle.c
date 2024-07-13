@@ -122,7 +122,7 @@ static int nDigits(uint32_t x) {
 void next_rtri(RightTriangle* const next, RightTriangle const* const t, int32_t const k) {
     DEBUG_ERROR_IF(next == NULL)
     DEBUG_ASSERT(isValid_rtri(t))
-    DEBUG_ERROR_IF(k < -1)
+    DEBUG_ERROR_IF(k < RT_MATRIX_A)
 
     switch (k) {
         case RT_MATRIX_A:
