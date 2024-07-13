@@ -8,6 +8,12 @@
 #include "padkit/stack.h"
 #include "righttriangle.h"
 
+static uint32_t rt[3][3] = {
+    { 1, 2, 2 },
+    { 2, 1, 2 },
+    { 2, 2, 3 }
+};
+
 static int nDigits(uint32_t x);
 
 void construct_rtri(
@@ -43,29 +49,36 @@ int main(int argc, char* argv[]) {
     }
 
     CREATE_EMPTY_STACK(RightTriangle, stack, BUFSIZ)
-
     PUSH_STACK_N(RightTriangle, RightTriangle* const first, stack)
-
     construct_rtri(first, 3, 4, 5);
-    RightTriangle* next;
-    do {
-        PEEK_STACK(RightTriangle const* const t, stack)
-        PUSH_STACK_N(RightTriangle, next, stack)
-        next_rtri(next, t);
-    } while (perimeter_tri(next) <= max_perimeter);
-    POP_STACK(stack)
-
-    for (uint32_t j = stack_size - 1; j != UINT32_MAX; j--) {
-        RightTriangle const* const t = stack + j;
+    for (uint32_t i = 0; i < stack_size; i++) {
+        RightTriangle const* const t = stack + i;
         DEBUG_ASSERT(isValid_rtri(t))
 
         RightTriangle base[1];
         clone_tri(base, t);
 
-        uint32_t k = 2;
+        for (int32_t k = RT_MATRIX_A; k <= RT_MATRIX_C; k++) {
+            PUSH_STACK_N(RightTriangle, RightTriangle* const next, stack)
+            next_rtri(next, base, k);
+            if (perimeter_tri(next) > max_perimeter) {
+                POP_STACK(stack)
+            }
+        }
+    }
+
+    for (uint32_t i = stack_size - 1; i != UINT32_MAX; i--) {
+        RightTriangle const* const t = stack + i;
+        DEBUG_ASSERT(isValid_rtri(t))
+
+        RightTriangle base[1];
+        clone_tri(base, t);
+
+        int32_t k = 2;
+        RightTriangle* next;
         do {
             PUSH_STACK_N(RightTriangle, next, stack)
-            nextMult_rtri(next, base, k++);
+            next_rtri(next, base, k++);
         } while (perimeter_tri(next) <= max_perimeter);
         POP_STACK(stack)
     }
@@ -106,28 +119,28 @@ static int nDigits(uint32_t x) {
     return nDigits;
 }
 
-void next_rtri(RightTriangle* const next, RightTriangle const* const t) {
+void next_rtri(RightTriangle* const next, RightTriangle const* const t, int32_t const k) {
     DEBUG_ERROR_IF(next == NULL)
     DEBUG_ASSERT(isValid_rtri(t))
+    DEBUG_ERROR_IF(k < -1)
 
-    (*next)[0] = (*t)[0] + 2;
-    (*next)[1] = (*t)[1] + 2 * ((*t)[0] + 1);
-    (*next)[2] = (*next)[1] + 1;
-
-    DEBUG_ASSERT(isValid_rtri(next))
-}
-
-void nextMult_rtri(
-    RightTriangle* const next, RightTriangle const* const t,
-    uint32_t const k
-) {
-    DEBUG_ERROR_IF(next == NULL)
-    DEBUG_ASSERT(isValid_rtri(t))
-    DEBUG_ERROR_IF(k == 0)
-
-    (*next)[0] = k * (*t)[0];
-    (*next)[1] = k * (*t)[1];
-    (*next)[2] = k * (*t)[2];
+    switch (k) {
+        case RT_MATRIX_A:
+            for (uint32_t i = 0; i < 3; i++)
+                (*next)[i] = rt[i][2] * (*t)[2] - rt[i][1] * (*t)[1] + rt[i][0] * (*t)[0];
+            break;
+        case RT_MATRIX_B:
+            for (uint32_t i = 0; i < 3; i++)
+                (*next)[i] = rt[i][2] * (*t)[2] + rt[i][1] * (*t)[1] + rt[i][0] * (*t)[0];
+            break;
+        case RT_MATRIX_C:
+            for (uint32_t i = 0; i < 3; i++)
+                (*next)[i] = rt[i][2] * (*t)[2] + rt[i][1] * (*t)[1] - rt[i][0] * (*t)[0];
+            break;
+        default:
+            for (uint32_t i = 0; i < 3; i++)
+                (*next)[i] = (uint32_t)k * (*t)[i];
+    }
 
     DEBUG_ASSERT(isValid_rtri(next))
 }

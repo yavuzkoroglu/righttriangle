@@ -25,18 +25,12 @@
      * @brief Constructs the next RightTriangle of a RightTriangle.
      * @param next A pointer to the next RightTriangle.
      * @param t A pointer to the constant RightTriangle.
+     * @param k
      */
-    void next_rtri(RightTriangle* const next, RightTriangle const* const t);
-
-    /**
-     * @brief Constructs the next multiple RightTriangle of a RightTriangle.
-     * @param next A pointer to the next multiple RightTriangle.
-     * @param t A pointer to the constant RightTriangle.
-     */
-    void nextMult_rtri(
-        RightTriangle* const next, RightTriangle const* const t,
-        uint32_t const k
-    );
+    #define RT_MATRIX_A -1
+    #define RT_MATRIX_B -0
+    #define RT_MATRIX_C 1
+    void next_rtri(RightTriangle* const next, RightTriangle const* const t, int32_t const k);
 
     /**
      * @brief Checks if a RightTriangle is valid.
