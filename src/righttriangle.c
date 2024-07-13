@@ -1,3 +1,4 @@
+
 /**
  * @file righttriangle.c
  * @brief Implements RightTriangle functions.
@@ -68,8 +69,14 @@ int main(int argc, char* argv[]) {
     }
 
     for (uint32_t i = stack_size - 1; i != UINT32_MAX; i--) {
-        RightTriangle const* const t = stack + i;
+        RightTriangle* const t = stack + i;
         DEBUG_ASSERT(isValid_rtri(t))
+
+        if ((*t)[0] > (*t)[1]) {
+            uint32_t const tmp = (*t)[0];
+            (*t)[0] = (*t)[1];
+            (*t)[1] = tmp;
+        }
 
         RightTriangle base[1];
         clone_tri(base, t);
@@ -81,17 +88,6 @@ int main(int argc, char* argv[]) {
             next_rtri(next, base, k++);
         } while (perimeter_tri(next) <= max_perimeter);
         POP_STACK(stack)
-    }
-
-    for (uint32_t i = 0; i < stack_size; i++) {
-        RightTriangle* const t = stack + i;
-        DEBUG_ASSERT(isValid_rtri(t))
-
-        if ((*t)[0] > (*t)[1]) {
-            uint32_t const tmp = (*t)[0];
-            (*t)[0] = (*t)[1];
-            (*t)[1] = tmp;
-        }
     }
 
     qsort(stack, stack_size, sizeof(RightTriangle), compare_tri);
