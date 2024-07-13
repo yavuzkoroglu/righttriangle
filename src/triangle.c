@@ -29,6 +29,7 @@ void clone_tri(Triangle* const clone, Triangle const* const original) {
     DEBUG_ASSERT(isValid_tri(clone))
 }
 
+/*
 int compare_tri(void const* a, void const* b) {
     Triangle const* const t1 = (Triangle const*)a;
     Triangle const* const t2 = (Triangle const*)b;
@@ -61,6 +62,37 @@ int compare_tri(void const* a, void const* b) {
             return -1;
         }
     } else if (p[0] > p[1]) {
+        return 1;
+    } else {
+        return -1;
+    }
+}
+*/
+
+int compare_tri(void const* a, void const* b) {
+    Triangle const* const t1 = (Triangle const*)a;
+    Triangle const* const t2 = (Triangle const*)b;
+
+    DEBUG_ASSERT(isValid_tri(t1))
+    DEBUG_ASSERT(isValid_tri(t2))
+
+    if (a == b) {
+        return 0;
+    } else if ((*t1)[0] == (*t2)[0]) {
+        if ((*t1)[1] == (*t2)[1]) {
+            if ((*t1)[2] == (*t2)[2]) {
+                return 0;
+            } else if ((*t1)[2] > (*t2)[2]) {
+                return 1;
+            } else {
+                return -1;
+            }
+        } else if ((*t1)[1] > (*t2)[1]) {
+            return 1;
+        } else {
+            return -1;
+        }
+    } else if ((*t1)[0] > (*t2)[0]) {
         return 1;
     } else {
         return -1;
