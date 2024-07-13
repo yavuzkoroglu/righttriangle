@@ -83,6 +83,17 @@ int main(int argc, char* argv[]) {
         POP_STACK(stack)
     }
 
+    for (uint32_t i = 0; i < stack_size; i++) {
+        RightTriangle* const t = stack + i;
+        DEBUG_ASSERT(isValid_rtri(t))
+
+        if ((*t)[0] > (*t)[1]) {
+            uint32_t const tmp = (*t)[0];
+            (*t)[0] = (*t)[1];
+            (*t)[1] = tmp;
+        }
+    }
+
     qsort(stack, stack_size, sizeof(RightTriangle), compare_tri);
 
     uint32_t max_side_len = 0;
