@@ -35,17 +35,17 @@ int main(int argc, char* argv[]) {
     puts("");
 
     if (argc < 2) {
-        printf("  Usage: %s <max_perimeter>\n\n", argv[0]);
+        printf("  Usage: %s <min_side_limit>\n\n", argv[0]);
         return EXIT_SUCCESS;
     }
 
-    uint32_t max_perimeter;
-    if (sscanf(argv[1], "%"SCNu32, &max_perimeter) != 1) {
-        puts("  <max_perimeter> must be a positive integer!\n");
+    uint32_t min_side_limit;
+    if (sscanf(argv[1], "%"SCNu32, &min_side_limit) != 1) {
+        puts("  <min_side_limit> must be a positive integer!\n");
         return EXIT_FAILURE;
     }
 
-    if (max_perimeter < 12) {
+    if (min_side_limit < 3) {
         return EXIT_SUCCESS;
     }
 
@@ -62,9 +62,8 @@ int main(int argc, char* argv[]) {
         for (int32_t k = RT_MATRIX_A; k <= RT_MATRIX_C; k++) {
             PUSH_STACK_N(RightTriangle, RightTriangle* const next, stack)
             next_rtri(next, base, k);
-            if (perimeter_tri(next) > max_perimeter) {
-                POP_STACK(stack)
-            }
+            if (minSideLength_tri(next) <= min_side_limit) continue;
+            POP_STACK(stack)
         }
     }
 
@@ -86,7 +85,7 @@ int main(int argc, char* argv[]) {
         do {
             PUSH_STACK_N(RightTriangle, next, stack)
             next_rtri(next, base, k++);
-        } while (perimeter_tri(next) <= max_perimeter);
+        } while (minSideLength_tri(next) <= min_side_limit);
         POP_STACK(stack)
     }
 

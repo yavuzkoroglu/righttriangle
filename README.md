@@ -1,11 +1,11 @@
 # righttriangle
 
-Generates all the integer right triangles with a perimeter less than or equal to `<max_perimeter>`.
+Generates all the integer right triangles with a minimum side length less than or equal to `<min_side_limit>`.
 
 ## Usage
 
 ```
-Usage: bin/righttriangle <max_perimeter>
+Usage: bin/righttriangle <min_side_limit>
 ```
 
 ## How To Clone This Repository
@@ -21,31 +21,31 @@ cd righttriangle
 make
 ```
 
-## Example Usage (`<max_perimeter>` = 100)
+## Example Usage (`<min_side_limit>` = 16)
 
 ```
-bin/righttriangle 100
+bin/righttriangle 16
 ```
 
-## Example Output (`<max_perimeter>` = 100)
+## Example Output (`<min_side_limit>` = 16)
 
 ```
-  1: perimeter = 12	( 3,  4,  5)
-  2: perimeter = 30	( 5, 12, 13)
-  3: perimeter = 24	( 6,  8, 10)
-  4: perimeter = 56	( 7, 24, 25)
-  5: perimeter = 40	( 8, 15, 17)
-  6: perimeter = 36	( 9, 12, 15)
-  7: perimeter = 90	( 9, 40, 41)
-  8: perimeter = 60	(10, 24, 26)
-  9: perimeter = 48	(12, 16, 20)
- 10: perimeter = 84	(12, 35, 37)
- 11: perimeter = 60	(15, 20, 25)
- 12: perimeter = 90	(15, 36, 39)
- 13: perimeter = 80	(16, 30, 34)
- 14: perimeter = 72	(18, 24, 30)
- 15: perimeter = 70	(20, 21, 29)
- 16: perimeter = 84	(21, 28, 35)
- 17: perimeter = 96	(24, 32, 40)
-
+  1: (  3,   4,   5)
+  2: (  5,  12,  13)
+  3: (  6,   8,  10)
+  4: (  7,  24,  25)
+  5: (  8,  15,  17)
+  6: (  9,  12,  15)
+  7: (  9,  40,  41)
+  8: ( 10,  24,  26)
+  9: ( 11,  60,  61)
+ 10: ( 12,  16,  20)
+ 11: ( 12,  35,  37)
+ 12: ( 13,  84,  85)
+ 13: ( 14,  48,  50)
+ 14: ( 15,  20,  25)
+ 15: ( 15,  36,  39)
+ 16: ( 15, 112, 113)
+ 17: ( 16,  30,  34)
+ 18: ( 16,  63,  65)
 ```

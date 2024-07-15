@@ -60,6 +60,12 @@
     bool isValid_tri(Triangle const* const t);
 
     /**
+     * @brief Returns the minimum side length of a Triangle.
+     * @param t A pointer to the constant Triangle.
+     */
+    uint32_t minSideLength_tri(Triangle const* const t);
+
+    /**
      * @brief Calculates the perimeter of a Triangle.
      * @param t A pointer to the constant Triangle.
      */
