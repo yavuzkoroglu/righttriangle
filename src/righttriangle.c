@@ -1,4 +1,3 @@
-
 /**
  * @file righttriangle.c
  * @brief Implements RightTriangle functions.
