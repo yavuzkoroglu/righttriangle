@@ -7,8 +7,6 @@
 #include "padkit/stack.h"
 #include "righttriangle.h"
 
-static int nDigits(uint32_t x);
-
 void construct_rtri(
     RightTriangle* const t,
     uint32_t const a, uint32_t const b, uint32_t const c
@@ -21,6 +19,15 @@ void construct_rtri(
     construct_tri(t, a, b, c);
 
     DEBUG_ASSERT(isValid_rtri(t))
+}
+
+static int countDigits(uint32_t x) {
+    int nDigits = 0;
+    while (x > 0) {
+        x /= 10;
+        nDigits++;
+    }
+    return nDigits;
 }
 
 bool isValid_rtri(RightTriangle const* const t) {
@@ -106,8 +113,8 @@ int main(int argc, char* argv[]) {
             max_side_len = (*t)[2];
     }
 
-    int const n = nDigits(stack_size);
-    int const m = nDigits(max_side_len);
+    int const n = countDigits(stack_size);
+    int const m = countDigits(max_side_len);
     for (uint32_t i = 0; i < stack_size; i++) {
         RightTriangle const* const t = stack + i;
         DEBUG_ASSERT(isValid_rtri(t))
@@ -129,15 +136,6 @@ uint32_t minSideLength_rtri(RightTriangle const* const t) {
         return (*t)[0];
     else
         return (*t)[1];
-}
-
-static int nDigits(uint32_t x) {
-    int nDigits = 0;
-    while (x > 0) {
-        x /= 10;
-        nDigits++;
-    }
-    return nDigits;
 }
 
 void next_rtri(RightTriangle* const next, RightTriangle const* const t, int32_t const k) {
