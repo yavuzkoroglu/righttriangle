@@ -5,7 +5,6 @@
  * @author Yavuz Koroglu
  */
 #include <inttypes.h>
-#include "padkit/debug.h"
 #include "padkit/stack.h"
 #include "righttriangle.h"
 
