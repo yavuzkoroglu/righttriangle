@@ -143,31 +143,25 @@ static int nDigits(uint32_t x) {
 }
 
 void next_rtri(RightTriangle* const next, RightTriangle const* const t, int32_t const k) {
-    static uint32_t const rt[3][3] = {
-        { 1, 2, 2 },
-        { 2, 1, 2 },
-        { 2, 2, 3 }
-    };
-
     DEBUG_ERROR_IF(next == NULL)
     DEBUG_ASSERT(isValid_rtri(t))
     DEBUG_ERROR_IF(k < RT_MATRIX_A)
 
     switch (k) {
         case RT_MATRIX_A:
-            (*next)[0] = rt[0][2] * (*t)[2] - rt[0][1] * (*t)[1] + rt[0][0] * (*t)[0];
-            (*next)[1] = rt[1][2] * (*t)[2] - rt[1][1] * (*t)[1] + rt[1][0] * (*t)[0];
-            (*next)[2] = rt[2][2] * (*t)[2] - rt[2][1] * (*t)[1] + rt[2][0] * (*t)[0];
+            (*next)[0] = 2 * (*t)[2] - 2 * (*t)[1] +     (*t)[0];
+            (*next)[1] = 2 * (*t)[2] -     (*t)[1] + 2 * (*t)[0];
+            (*next)[2] = 3 * (*t)[2] - 2 * (*t)[1] + 2 * (*t)[0];
             break;
         case RT_MATRIX_B:
-            (*next)[0] = rt[0][2] * (*t)[2] + rt[0][1] * (*t)[1] + rt[0][0] * (*t)[0];
-            (*next)[1] = rt[1][2] * (*t)[2] + rt[1][1] * (*t)[1] + rt[1][0] * (*t)[0];
-            (*next)[2] = rt[2][2] * (*t)[2] + rt[2][1] * (*t)[1] + rt[2][0] * (*t)[0];
+            (*next)[0] = 2 * (*t)[2] + 2 * (*t)[1] +     (*t)[0];
+            (*next)[1] = 2 * (*t)[2] +     (*t)[1] + 2 * (*t)[0];
+            (*next)[2] = 3 * (*t)[2] + 2 * (*t)[1] + 2 * (*t)[0];
             break;
         case RT_MATRIX_C:
-            (*next)[0] = rt[0][2] * (*t)[2] + rt[0][1] * (*t)[1] - rt[0][0] * (*t)[0];
-            (*next)[1] = rt[1][2] * (*t)[2] + rt[1][1] * (*t)[1] - rt[1][0] * (*t)[0];
-            (*next)[2] = rt[2][2] * (*t)[2] + rt[2][1] * (*t)[1] - rt[2][0] * (*t)[0];
+            (*next)[0] = 2 * (*t)[2] + 2 * (*t)[1] -     (*t)[0];
+            (*next)[1] = 2 * (*t)[2] +     (*t)[1] - 2 * (*t)[0];
+            (*next)[2] = 3 * (*t)[2] + 2 * (*t)[1] - 2 * (*t)[0];
             break;
         default:
             (*next)[0] = (uint32_t)k * (*t)[0];
