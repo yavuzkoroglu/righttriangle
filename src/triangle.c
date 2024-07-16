@@ -12,10 +12,7 @@ bool areEqual_tri(Triangle const* const t1, Triangle const* const t2) {
     DEBUG_ASSERT(isValid_tri(t1))
     DEBUG_ASSERT(isValid_tri(t2))
 
-    if (t1 == t2)                               return 1;
-    if (memcmp(t1, t2, sizeof(Triangle)) == 0)  return 1;
-
-    return 0;
+    return memcmp(t1, t2, sizeof(Triangle)) == 0;
 }
 
 void clone_tri(Triangle* const clone, Triangle const* const original) {
@@ -38,27 +35,7 @@ int compare_tri(void const* a, void const* b) {
     DEBUG_ASSERT(isValid_tri(t1))
     DEBUG_ASSERT(isValid_tri(t2))
 
-    if (a == b) {
-        return 0;
-    } else if ((*t1)[0] == (*t2)[0]) {
-        if ((*t1)[1] == (*t2)[1]) {
-            if ((*t1)[2] == (*t2)[2]) {
-                return 0;
-            } else if ((*t1)[2] > (*t2)[2]) {
-                return 1;
-            } else {
-                return -1;
-            }
-        } else if ((*t1)[1] > (*t2)[1]) {
-            return 1;
-        } else {
-            return -1;
-        }
-    } else if ((*t1)[0] > (*t2)[0]) {
-        return 1;
-    } else {
-        return -1;
-    }
+    return memcmp(a, b, sizeof(Triangle));
 }
 
 void construct_tri(Triangle* const t, uint32_t const a, uint32_t const b, uint32_t const c) {
