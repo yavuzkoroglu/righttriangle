@@ -69,9 +69,9 @@ bool isValid_tri(Triangle const* const t) {
     if ((*t)[0] == 0)                   return 0;
     if ((*t)[1] == 0)                   return 0;
     if ((*t)[2] == 0)                   return 0;
-    if ((*t)[0] + (*t)[1] < (*t)[2])    return 0;
-    if ((*t)[0] + (*t)[2] < (*t)[1])    return 0;
-    if ((*t)[1] + (*t)[2] < (*t)[0])    return 0;
+    if ((*t)[0] + (*t)[1] <= (*t)[2])   return 0;
+    if ((*t)[0] + (*t)[2] <= (*t)[1])   return 0;
+    if ((*t)[1] + (*t)[2] <= (*t)[0])   return 0;
 
     return 1;
 }
