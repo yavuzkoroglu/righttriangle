@@ -85,9 +85,9 @@ int main(int argc, char* argv[]) {
         DEBUG_ASSERT(isValid_rtri(t))
 
         if ((*t)[0] > (*t)[1]) {
-            uint32_t const tmp = (*t)[0];
-            (*t)[0] = (*t)[1];
-            (*t)[1] = tmp;
+            uint32_t const tmp  = (*t)[0];
+            (*t)[0]             = (*t)[1];
+            (*t)[1]             = tmp;
         }
 
         RightTriangle base[1];
