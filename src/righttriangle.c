@@ -9,12 +9,6 @@
 #include "padkit/stack.h"
 #include "righttriangle.h"
 
-static uint32_t rt[3][3] = {
-    { 1, 2, 2 },
-    { 2, 1, 2 },
-    { 2, 2, 3 }
-};
-
 static int nDigits(uint32_t x);
 
 void construct_rtri(
@@ -29,6 +23,20 @@ void construct_rtri(
     construct_tri(t, a, b, c);
 
     DEBUG_ASSERT(isValid_rtri(t))
+}
+
+bool isValid_rtri(RightTriangle const* const t) {
+    if (!isValid_tri(t)) return 0;
+
+    uint64_t const sq[3] = {
+        (uint64_t)(*t)[0] * (uint64_t)(*t)[0],
+        (uint64_t)(*t)[1] * (uint64_t)(*t)[1],
+        (uint64_t)(*t)[2] * (uint64_t)(*t)[2]
+    };
+
+    if (sq[0] + sq[1] != sq[2]) return 0;
+
+    return 1;
 }
 
 int main(int argc, char* argv[]) {
@@ -62,7 +70,7 @@ int main(int argc, char* argv[]) {
         for (int32_t k = RT_MATRIX_A; k <= RT_MATRIX_C; k++) {
             PUSH_STACK_N(RightTriangle, RightTriangle* const next, stack)
             next_rtri(next, base, k);
-            if (minSideLength_tri(next) <= min_side_limit) continue;
+            if (minSideLength_rtri(next) <= min_side_limit) continue;
             POP_STACK(stack)
         }
     }
@@ -85,7 +93,7 @@ int main(int argc, char* argv[]) {
         do {
             PUSH_STACK_N(RightTriangle, next, stack)
             next_rtri(next, base, k++);
-        } while (minSideLength_tri(next) <= min_side_limit);
+        } while (minSideLength_rtri(next) <= min_side_limit);
         POP_STACK(stack)
     }
 
@@ -116,51 +124,56 @@ int main(int argc, char* argv[]) {
     return EXIT_SUCCESS;
 }
 
+uint32_t minSideLength_rtri(RightTriangle const* const t) {
+    DEBUG_ASSERT(isValid_rtri(t))
+
+    if ((*t)[0] < (*t)[1])
+        return (*t)[0];
+    else
+        return (*t)[1];
+}
+
 static int nDigits(uint32_t x) {
     int nDigits = 0;
     while (x > 0) {
-        nDigits++;
         x /= 10;
+        nDigits++;
     }
     return nDigits;
 }
 
 void next_rtri(RightTriangle* const next, RightTriangle const* const t, int32_t const k) {
+    static uint32_t const rt[3][3] = {
+        { 1, 2, 2 },
+        { 2, 1, 2 },
+        { 2, 2, 3 }
+    };
+
     DEBUG_ERROR_IF(next == NULL)
     DEBUG_ASSERT(isValid_rtri(t))
     DEBUG_ERROR_IF(k < RT_MATRIX_A)
 
     switch (k) {
         case RT_MATRIX_A:
-            for (uint32_t i = 0; i < 3; i++)
-                (*next)[i] = rt[i][2] * (*t)[2] - rt[i][1] * (*t)[1] + rt[i][0] * (*t)[0];
+            (*next)[0] = rt[0][2] * (*t)[2] - rt[0][1] * (*t)[1] + rt[0][0] * (*t)[0];
+            (*next)[1] = rt[1][2] * (*t)[2] - rt[1][1] * (*t)[1] + rt[1][0] * (*t)[0];
+            (*next)[2] = rt[2][2] * (*t)[2] - rt[2][1] * (*t)[1] + rt[2][0] * (*t)[0];
             break;
         case RT_MATRIX_B:
-            for (uint32_t i = 0; i < 3; i++)
-                (*next)[i] = rt[i][2] * (*t)[2] + rt[i][1] * (*t)[1] + rt[i][0] * (*t)[0];
+            (*next)[0] = rt[0][2] * (*t)[2] + rt[0][1] * (*t)[1] + rt[0][0] * (*t)[0];
+            (*next)[1] = rt[1][2] * (*t)[2] + rt[1][1] * (*t)[1] + rt[1][0] * (*t)[0];
+            (*next)[2] = rt[2][2] * (*t)[2] + rt[2][1] * (*t)[1] + rt[2][0] * (*t)[0];
             break;
         case RT_MATRIX_C:
-            for (uint32_t i = 0; i < 3; i++)
-                (*next)[i] = rt[i][2] * (*t)[2] + rt[i][1] * (*t)[1] - rt[i][0] * (*t)[0];
+            (*next)[0] = rt[0][2] * (*t)[2] + rt[0][1] * (*t)[1] - rt[0][0] * (*t)[0];
+            (*next)[1] = rt[1][2] * (*t)[2] + rt[1][1] * (*t)[1] - rt[1][0] * (*t)[0];
+            (*next)[2] = rt[2][2] * (*t)[2] + rt[2][1] * (*t)[1] - rt[2][0] * (*t)[0];
             break;
         default:
-            for (uint32_t i = 0; i < 3; i++)
-                (*next)[i] = (uint32_t)k * (*t)[i];
+            (*next)[0] = (uint32_t)k * (*t)[0];
+            (*next)[1] = (uint32_t)k * (*t)[1];
+            (*next)[2] = (uint32_t)k * (*t)[2];
     }
 
     DEBUG_ASSERT(isValid_rtri(next))
-}
-
-bool isValid_rtri(RightTriangle const* const t) {
-    if (!isValid_tri(t))        return 0;
-
-    uint64_t const sq[3] = {
-        (uint64_t)(*t)[0] * (uint64_t)(*t)[0],
-        (uint64_t)(*t)[1] * (uint64_t)(*t)[1],
-        (uint64_t)(*t)[2] * (uint64_t)(*t)[2]
-    };
-
-    if (sq[0] + sq[1] != sq[2]) return 0;
-
-    return 1;
 }

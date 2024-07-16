@@ -22,9 +22,13 @@ bool areEqual_tri(Triangle const* const t1, Triangle const* const t2) {
 
 void clone_tri(Triangle* const clone, Triangle const* const original) {
     DEBUG_ERROR_IF(clone == NULL)
+    DEBUG_ERROR_IF(clone == original)
     DEBUG_ASSERT(isValid_tri(original))
 
-    memmove(clone, original, sizeof(Triangle));
+    DEBUG_EXECUTE(size_t const diff = (size_t)(clone > original ? clone - original : original - clone))
+    DEBUG_ERROR_IF(diff < sizeof(Triangle))
+
+    memcpy(clone, original, sizeof(Triangle));
 
     DEBUG_ASSERT(isValid_tri(clone))
 }
@@ -101,9 +105,14 @@ uint32_t minSideLength_tri(Triangle const* const t) {
     DEBUG_ASSERT(isValid_tri(t))
 
     if ((*t)[0] < (*t)[1])
-        return (*t)[0];
-    else
+        if ((*t)[0] < (*t)[2])
+            return (*t)[0];
+        else
+            return (*t)[2];
+    else if ((*t)[1] < (*t)[2])
         return (*t)[1];
+    else
+        return (*t)[2];
 }
 
 uint32_t perimeter_tri(Triangle const* const t) {

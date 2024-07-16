@@ -37,4 +37,10 @@
      * @param t A pointer to the constant RightTriangle.
      */
     bool isValid_rtri(RightTriangle const* const t);
+
+    /**
+     * @brief Returns the minimum side length of a RightTriangle.
+     * @param t A pointer to the constant RightTriangle.
+     */
+    uint32_t minSideLength_rtri(RightTriangle const* const t);
 #endif
