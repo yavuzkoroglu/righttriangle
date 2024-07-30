@@ -10,6 +10,33 @@
     typedef Triangle RightTriangle;
 
     /**
+     * @brief Checks if two RightTriangle objects are equivalent.
+     * @param t1 A pointer to the constant first RightTriangle.
+     * @param t2 A pointer to the constant second Triangle.
+     */
+    bool areEqual_rtri(RightTriangle const* const t1, RightTriangle const* const t2);
+
+    /**
+     * @brief Calculates the area of a RightTriangle.
+     * @param t A pointer to the constant RightTriangle.
+     */
+    uint64_t area_rtri(RightTriangle const* const t);
+
+    /**
+     * @brief Clones a RightTriangle.
+     * @param clone A pointer to the clone RightTriangle.
+     * @param original A pointer to the constant original RightTriangle.
+     */
+    void clone_rtri(RightTriangle* const clone, RightTriangle const* const original);
+
+    /**
+     * @brief Compares two RightTriangle objects.
+     * @param a A pointer to the constant first RightTriangle.
+     * @param b A pointer to the constant second RightTriangle.
+     */
+    int compare_rtri(void const* a, void const* b);
+
+    /**
      * @brief Constructs a RightTriangle.
      * @param t A pointer to the RightTriangle.
      * @param a The first side length of the RightTriangle.

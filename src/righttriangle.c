@@ -7,6 +7,48 @@
 #include "padkit/stack.h"
 #include "righttriangle.h"
 
+bool areEqual_rtri(RightTriangle const* const t1, RightTriangle const* const t2) {
+    DEBUG_ASSERT(isValid_rtri(t1))
+    DEBUG_ASSERT(isValid_rtri(t2))
+
+    return areEqual_tri(t1, t2);
+}
+
+uint64_t area_rtri(RightTriangle const* const t) {
+    DEBUG_ASSERT(isValid_rtri(t))
+
+    return (uint64_t)(*t)[0] * (uint64_t)(*t)[1];
+}
+
+void clone_rtri(RightTriangle* const clone, RightTriangle const* const original) {
+    DEBUG_ERROR_IF(clone == NULL)
+    DEBUG_ASSERT(isValid_rtri(original))
+
+    clone_tri(clone, original);
+
+    DEBUG_ASSERT(isValid_rtri(clone))
+}
+
+int compare_rtri(void const* a, void const* b) {
+    RightTriangle const* const t1 = (RightTriangle const*)a;
+    RightTriangle const* const t2 = (RightTriangle const*)b;
+
+    DEBUG_ASSERT(isValid_rtri(t1))
+    DEBUG_ASSERT(isValid_rtri(t2))
+
+    if ((*t1)[0] < (*t2)[0]) {
+        return -1;
+    } else if ((*t1)[0] > (*t2)[0]) {
+        return 1;
+    } else if ((*t1)[1] < (*t2)[1]) {
+        return -1;
+    } else if ((*t1)[1] > (*t2)[1]) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
 void construct_rtri(
     RightTriangle* const t,
     uint32_t const a, uint32_t const b, uint32_t const c
@@ -70,7 +112,7 @@ int main(int argc, char* argv[]) {
         DEBUG_ASSERT(isValid_rtri(t))
 
         RightTriangle base[1];
-        clone_tri(base, t);
+        clone_rtri(base, t);
 
         for (int32_t k = RT_MATRIX_A; k <= RT_MATRIX_C; k++) {
             PUSH_STACK_N(RightTriangle, RightTriangle* const next, stack)
@@ -91,7 +133,7 @@ int main(int argc, char* argv[]) {
         }
 
         RightTriangle base[1];
-        clone_tri(base, t);
+        clone_rtri(base, t);
 
         int32_t k = 2;
         RightTriangle* next;
@@ -102,7 +144,7 @@ int main(int argc, char* argv[]) {
         POP_STACK(stack)
     }
 
-    qsort(stack, stack_size, sizeof(RightTriangle), compare_tri);
+    qsort(stack, stack_size, sizeof(RightTriangle), compare_rtri);
 
     uint32_t max_side_len = 0;
     for (uint32_t i = 0; i < stack_size; i++) {
