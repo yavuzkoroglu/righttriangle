@@ -17,7 +17,7 @@ bool areEqual_rtri(RightTriangle const* const t1, RightTriangle const* const t2)
 uint64_t area_rtri(RightTriangle const* const t) {
     DEBUG_ASSERT(isValid_rtri(t))
 
-    return (uint64_t)(*t)[0] * (uint64_t)(*t)[1];
+    return ((uint64_t)(*t)[0] * (uint64_t)(*t)[1]) >> 1;
 }
 
 void clone_rtri(RightTriangle* const clone, RightTriangle const* const original) {
@@ -70,6 +70,11 @@ static int countDigits(uint32_t x) {
         nDigits++;
     }
     return nDigits;
+}
+
+void dump_rtri(RightTriangle const* const t, int const padding) {
+    DEBUG_ASSERT(isValid_rtri(t))
+    dump_tri(t, padding);
 }
 
 bool isValid_rtri(RightTriangle const* const t) {
@@ -138,6 +143,7 @@ int main(int argc, char* argv[]) {
         int32_t k = 2;
         RightTriangle* next;
         do {
+            DEBUG_ASSERT(k < INT32_MAX)
             PUSH_STACK_N(RightTriangle, next, stack)
             next_rtri(next, base, k++);
         } while (minSideLength_rtri(next) <= min_side_limit);
@@ -149,7 +155,7 @@ int main(int argc, char* argv[]) {
     uint32_t max_side_len = 0;
     for (uint32_t i = 0; i < stack_size; i++) {
         RightTriangle const* const t = stack + i;
-        DEBUG_ASSERT(isValid_tri(t))
+        DEBUG_ASSERT(isValid_rtri(t))
 
         if ((*t)[2] > max_side_len)
             max_side_len = (*t)[2];
@@ -162,7 +168,7 @@ int main(int argc, char* argv[]) {
         DEBUG_ASSERT(isValid_rtri(t))
 
         printf(" %*"PRIu32": ", n, i + 1);
-        dump_tri(t, m);
+        dump_rtri(t, m);
     }
 
     FREE_STACK(stack)

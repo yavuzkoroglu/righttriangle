@@ -49,6 +49,13 @@
     );
 
     /**
+     * @brief Dumps a RightTriangle to the standard output.
+     * @param t A pointer to the constant RightTriangle.
+     * @param padding The left-padding amount.
+     */
+    void dump_rtri(RightTriangle const* const t, int const padding);
+
+    /**
      * @brief Constructs the next RightTriangle of a RightTriangle.
      * @param next A pointer to the next RightTriangle.
      * @param t A pointer to the constant RightTriangle.
