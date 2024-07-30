@@ -77,4 +77,10 @@
      * @param t A pointer to the constant RightTriangle.
      */
     uint32_t minSideLength_rtri(RightTriangle const* const t);
+
+    /**
+     * @brief Calculates the perimeter of a RightTriangle.
+     * @param t A pointer to the constant RightTriangle.
+     */
+    uint32_t perimeter_rtri(RightTriangle const* const t);
 #endif

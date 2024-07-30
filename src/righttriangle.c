@@ -215,3 +215,8 @@ void next_rtri(RightTriangle* const next, RightTriangle const* const t, int32_t 
 
     DEBUG_ASSERT(isValid_rtri(next))
 }
+
+uint32_t perimeter_rtri(RightTriangle const* const t) {
+    DEBUG_ASSERT(isValid_rtri(t))
+    return perimeter_tri(t);
+}
