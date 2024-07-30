@@ -48,12 +48,6 @@
     void dump_tri(Triangle const* const t, int const padding);
 
     /**
-     * @brief Frees a Triangle.
-     * @param t A pointer to the Triangle.
-     */
-    void free_tri(Triangle* const t);
-
-    /**
      * @brief Checks if a Triangle is valid.
      * @param t A pointer to the constant Triangle.
      */

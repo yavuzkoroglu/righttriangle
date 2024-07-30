@@ -73,11 +73,6 @@ void dump_tri(Triangle const* const t, int const padding) {
     );
 }
 
-void free_tri(Triangle* const t) {
-    DEBUG_ASSERT(isValid_tri(t))
-    free(*t);
-}
-
 bool isValid_tri(Triangle const* const t) {
     if (t == NULL)                      return 0;
     if ((*t)[0] == 0)                   return 0;
