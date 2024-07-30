@@ -146,7 +146,7 @@ int main(int argc, char* argv[]) {
             DEBUG_ASSERT(k < INT32_MAX)
             PUSH_STACK_N(RightTriangle, next, stack)
             next_rtri(next, base, k++);
-        } while (minSideLength_rtri(next) <= min_side_limit);
+        } while ((*next)[0] <= min_side_limit);
         POP_STACK(stack)
     }
 
