@@ -35,7 +35,21 @@ int compare_tri(void const* a, void const* b) {
     DEBUG_ASSERT(isValid_tri(t1))
     DEBUG_ASSERT(isValid_tri(t2))
 
-    return memcmp(a, b, sizeof(Triangle));
+    if ((*t1)[0] < (*t2)[0]) {
+        return -1;
+    } else if ((*t1)[0] > (*t2)[0]) {
+        return 1;
+    } else if ((*t1)[1] < (*t2)[1]) {
+        return -1;
+    } else if ((*t1)[1] > (*t2)[1]) {
+        return 1;
+    } else if ((*t1)[2] < (*t2)[2]) {
+        return -1;
+    } else if ((*t1)[2] > (*t2)[2]) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 void construct_tri(Triangle* const t, uint32_t const a, uint32_t const b, uint32_t const c) {
