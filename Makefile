@@ -28,9 +28,11 @@ obj: ; mkdir obj
 
 obj/righttriangle.o: obj           		\
     padkit/include/padkit/debug.h       \
+    padkit/include/padkit/memalloc.h    \
+    padkit/include/padkit/reallocate.h  \
+    padkit/include/padkit/stack.h       \
     include/righttriangle.h             \
     include/triangle.h                	\
-    src/triangle.c                    	\
     src/righttriangle.c                 \
     ; ${COMPILE} ${INCLUDES} src/righttriangle.c -c -o obj/righttriangle.o
 

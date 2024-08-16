@@ -4,6 +4,7 @@
  * @author Yavuz Koroglu
  */
 #include <inttypes.h>
+#include "padkit/debug.h"
 #include "padkit/stack.h"
 #include "righttriangle.h"
 
@@ -109,26 +110,37 @@ int main(int argc, char* argv[]) {
         return EXIT_SUCCESS;
     }
 
-    CREATE_EMPTY_STACK(RightTriangle, stack, BUFSIZ)
-    PUSH_STACK_N(RightTriangle, RightTriangle* const first, stack)
+    Stack stack[1];
+    DEBUG_ASSERT_NDEBUG_EXECUTE(
+        constructEmpty_stack(stack, sizeof(RightTriangle), STACK_RECOMMENDED_INITIAL_CAP)
+    )
+
+    RightTriangle* const first = pushZeros_stack(stack);
+    DEBUG_ERROR_IF(first == NULL)
+
     construct_rtri(first, 3, 4, 5);
-    for (uint32_t i = 0; i < stack_size; i++) {
-        RightTriangle const* const t = stack + i;
+    for (uint32_t i = 0; i < stack->size; i++) {
+        RightTriangle const* const t = get_stack(stack, i);
         DEBUG_ASSERT(isValid_rtri(t))
 
         RightTriangle base[1];
         clone_rtri(base, t);
 
         for (int32_t k = RT_MATRIX_A; k <= RT_MATRIX_C; k++) {
-            PUSH_STACK_N(RightTriangle, RightTriangle* const next, stack)
+            RightTriangle* const next = pushZeros_stack(stack);
+            DEBUG_ERROR_IF(next == NULL)
+
             next_rtri(next, base, k);
+
             if (minSideLength_rtri(next) <= min_side_limit) continue;
-            POP_STACK(stack)
+
+            DEBUG_ERROR_IF(pop_stack(stack) == NULL)
+            NDEBUG_EXECUTE(pop_stack(stack))
         }
     }
 
-    for (uint32_t i = stack_size - 1; i != UINT32_MAX; i--) {
-        RightTriangle* const t = stack + i;
+    for (uint32_t i = stack->size - 1; i != UINT32_MAX; i--) {
+        RightTriangle* const t = get_stack(stack, i);
         DEBUG_ASSERT(isValid_rtri(t))
 
         if ((*t)[0] > (*t)[1]) {
@@ -144,34 +156,36 @@ int main(int argc, char* argv[]) {
         RightTriangle* next;
         do {
             DEBUG_ASSERT(k < INT32_MAX)
-            PUSH_STACK_N(RightTriangle, next, stack)
+            next = pushZeros_stack(stack);
+            DEBUG_ERROR_IF(next == NULL)
             next_rtri(next, base, k++);
         } while ((*next)[0] <= min_side_limit);
-        POP_STACK(stack)
+        DEBUG_ERROR_IF(pop_stack(stack) == NULL)
+        NDEBUG_EXECUTE(pop_stack(stack))
     }
 
-    qsort(stack, stack_size, sizeof(RightTriangle), compare_rtri);
+    qsort(stack->array, stack->size, sizeof(RightTriangle), compare_rtri);
 
     uint32_t max_side_len = 0;
-    for (uint32_t i = 0; i < stack_size; i++) {
-        RightTriangle const* const t = stack + i;
+    for (uint32_t i = 0; i < stack->size; i++) {
+        RightTriangle const* const t = get_stack(stack, i);
         DEBUG_ASSERT(isValid_rtri(t))
 
         if ((*t)[2] > max_side_len)
             max_side_len = (*t)[2];
     }
 
-    int const n = countDigits(stack_size);
+    int const n = countDigits(stack->size);
     int const m = countDigits(max_side_len);
-    for (uint32_t i = 0; i < stack_size; i++) {
-        RightTriangle const* const t = stack + i;
+    for (uint32_t i = 0; i < stack->size; i++) {
+        RightTriangle const* const t = get_stack(stack, i);
         DEBUG_ASSERT(isValid_rtri(t))
 
         printf(" %*"PRIu32": ", n, i + 1);
         dump_rtri(t, m);
     }
 
-    FREE_STACK(stack)
+    DEBUG_ASSERT_NDEBUG_EXECUTE(free_stack(stack))
 
     puts("");
     return EXIT_SUCCESS;
