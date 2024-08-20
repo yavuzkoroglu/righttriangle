@@ -110,10 +110,8 @@ int main(int argc, char* argv[]) {
         return EXIT_SUCCESS;
     }
 
-    Stack stack[1];
-    DEBUG_ASSERT_NDEBUG_EXECUTE(
-        constructEmpty_stack(stack, sizeof(RightTriangle), STACK_RECOMMENDED_INITIAL_CAP)
-    )
+    Stack stack[1] = { NOT_A_STACK };
+    constructEmpty_stack(stack, sizeof(RightTriangle), STACK_RECOMMENDED_INITIAL_CAP);
 
     RightTriangle* const first = pushZeros_stack(stack);
     DEBUG_ERROR_IF(first == NULL)
@@ -134,8 +132,7 @@ int main(int argc, char* argv[]) {
 
             if (minSideLength_rtri(next) <= min_side_limit) continue;
 
-            DEBUG_ERROR_IF(pop_stack(stack) == NULL)
-            NDEBUG_EXECUTE(pop_stack(stack))
+            pop_stack(stack);
         }
     }
 
@@ -157,11 +154,9 @@ int main(int argc, char* argv[]) {
         do {
             DEBUG_ASSERT(k < INT32_MAX)
             next = pushZeros_stack(stack);
-            DEBUG_ERROR_IF(next == NULL)
             next_rtri(next, base, k++);
         } while ((*next)[0] <= min_side_limit);
-        DEBUG_ERROR_IF(pop_stack(stack) == NULL)
-        NDEBUG_EXECUTE(pop_stack(stack))
+        pop_stack(stack);
     }
 
     qsort(stack->array, stack->size, sizeof(RightTriangle), compare_rtri);
@@ -185,7 +180,7 @@ int main(int argc, char* argv[]) {
         dump_rtri(t, m);
     }
 
-    DEBUG_ASSERT_NDEBUG_EXECUTE(free_stack(stack))
+    free_stack(stack);
 
     puts("");
     return EXIT_SUCCESS;
