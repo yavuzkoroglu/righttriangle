@@ -44,10 +44,6 @@ obj/triangle.o: obj           			\
 
 objects: cleanobjects ${OBJECTS}
 
-padkit: ; git clone https://github.com/yavuzkoroglu/padkit.git
-
-padkit/compile.mk: padkit; $(make padkit/compile.mk)
-
 padkit/include/padkit.h: padkit; make -C padkit include/padkit.h
 
 padkit/lib/libpadkit.a: cleanlibpadkit padkit; make -C padkit lib/libpadkit.a
