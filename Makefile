@@ -5,7 +5,7 @@ OBJECTS=obj/righttriangle.o obj/triangle.o
 
 all: bin/righttriangle
 
-.PHONY: all clean cleanobjects cleanpadkit documentation objects
+.PHONY: all clean cleanobjects documentation objects
 
 bin: ; mkdir bin
 
@@ -16,9 +16,7 @@ bin/righttriangle:                      \
     padkit/lib/libpadkit.a              \
 	; ${COMPILE} ${OBJECTS} padkit/lib/libpadkit.a -o bin/righttriangle
 
-clean: ; rm -rf obj bin padkit *.gcno *.gcda *.gcov html latex
-
-cleanlibpadkit: ; rm -rf padkit/obj padkit/lib/libpadkit.a
+clean: ; rm -rf obj bin *.gcno *.gcda *.gcov html latex
 
 cleanobjects: ; rm -rf obj
 
@@ -44,6 +42,6 @@ obj/triangle.o: obj           			\
 
 objects: cleanobjects ${OBJECTS}
 
-padkit/include/padkit.h: padkit; make -C padkit include/padkit.h
+padkit/include/padkit.h: padkit; make -C padkit clean include/padkit.h
 
-padkit/lib/libpadkit.a: cleanlibpadkit padkit; make -C padkit lib/libpadkit.a
+padkit/lib/libpadkit.a: padkit; make -C padkit clean lib/libpadkit.a

@@ -14,20 +14,20 @@
      * @param t1 A pointer to the constant first RightTriangle.
      * @param t2 A pointer to the constant second Triangle.
      */
-    bool areEqual_rtri(RightTriangle const* const t1, RightTriangle const* const t2);
+    bool areEqual_rtri(RightTriangle const t1[static const 1], RightTriangle const t2[static const 1]);
 
     /**
      * @brief Calculates the area of a RightTriangle.
      * @param t A pointer to the constant RightTriangle.
      */
-    uint64_t area_rtri(RightTriangle const* const t);
+    uint64_t area_rtri(RightTriangle const t[static const 1]);
 
     /**
      * @brief Clones a RightTriangle.
      * @param clone A pointer to the clone RightTriangle.
      * @param original A pointer to the constant original RightTriangle.
      */
-    void clone_rtri(RightTriangle* const clone, RightTriangle const* const original);
+    void clone_rtri(RightTriangle clone[static const 1], RightTriangle const original[static const 1]);
 
     /**
      * @brief Compares two RightTriangle objects.
@@ -44,7 +44,7 @@
      * @param c The hypotenuse of the RightTriangle.
      */
     void construct_rtri(
-        RightTriangle* const t,
+        RightTriangle t[static const 1],
         uint32_t const a, uint32_t const b, uint32_t const c
     );
 
@@ -53,7 +53,7 @@
      * @param t A pointer to the constant RightTriangle.
      * @param padding The left-padding amount.
      */
-    void dump_rtri(RightTriangle const* const t, int const padding);
+    void dump_rtri(RightTriangle const t[static const 1], int const padding);
 
     /**
      * @brief Constructs the next RightTriangle of a RightTriangle.
@@ -64,23 +64,23 @@
     #define RT_MATRIX_A -1
     #define RT_MATRIX_B -0
     #define RT_MATRIX_C 1
-    void next_rtri(RightTriangle* const next, RightTriangle const* const t, int32_t const k);
+    void next_rtri(RightTriangle next[static const 1], RightTriangle const t[static const 1], int32_t const k);
 
     /**
      * @brief Checks if a RightTriangle is valid.
      * @param t A pointer to the constant RightTriangle.
      */
-    bool isValid_rtri(RightTriangle const* const t);
+    bool isValid_rtri(RightTriangle const t[static const 1]);
 
     /**
      * @brief Returns the minimum side length of a RightTriangle.
      * @param t A pointer to the constant RightTriangle.
      */
-    uint32_t minSideLength_rtri(RightTriangle const* const t);
+    uint32_t minSideLength_rtri(RightTriangle const t[static const 1]);
 
     /**
      * @brief Calculates the perimeter of a RightTriangle.
      * @param t A pointer to the constant RightTriangle.
      */
-    uint32_t perimeter_rtri(RightTriangle const* const t);
+    uint32_t perimeter_rtri(RightTriangle const t[static const 1]);
 #endif

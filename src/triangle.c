@@ -8,20 +8,20 @@
 #include "padkit/debug.h"
 #include "triangle.h"
 
-bool areEqual_tri(Triangle const* const t1, Triangle const* const t2) {
+bool areEqual_tri(Triangle const t1[static const 1], Triangle const t2[static const 1]) {
     DEBUG_ASSERT(isValid_tri(t1))
     DEBUG_ASSERT(isValid_tri(t2))
 
     return memcmp(t1, t2, sizeof(Triangle)) == 0;
 }
 
-void clone_tri(Triangle* const clone, Triangle const* const original) {
-    DEBUG_ERROR_IF(clone == NULL)
+void clone_tri(Triangle clone[static const 1], Triangle const original[static const 1]) {
     DEBUG_ERROR_IF(clone == original)
     DEBUG_ASSERT(isValid_tri(original))
-
-    DEBUG_EXECUTE(size_t const diff = (size_t)(clone > original ? clone - original : original - clone))
-    DEBUG_ERROR_IF(diff < sizeof(Triangle))
+    {
+        DEBUG_EXECUTE(size_t const diff = (size_t)(clone > original ? clone - original : original - clone))
+        DEBUG_ERROR_IF(diff < sizeof(Triangle))
+    }
 
     memcpy(clone, original, sizeof(Triangle));
 
@@ -52,8 +52,7 @@ int compare_tri(void const* a, void const* b) {
     }
 }
 
-void construct_tri(Triangle* const t, uint32_t const a, uint32_t const b, uint32_t const c) {
-    DEBUG_ERROR_IF(t == NULL)
+void construct_tri(Triangle t[static const 1], uint32_t const a, uint32_t const b, uint32_t const c) {
     DEBUG_ERROR_IF(a == 0)
     DEBUG_ERROR_IF(b == 0)
     DEBUG_ERROR_IF(c == 0)
@@ -65,7 +64,7 @@ void construct_tri(Triangle* const t, uint32_t const a, uint32_t const b, uint32
     DEBUG_ASSERT(isValid_tri(t))
 }
 
-void dump_tri(Triangle const* const t, int const padding) {
+void dump_tri(Triangle const t[static const 1], int const padding) {
     DEBUG_ASSERT(isValid_tri(t))
     printf(
         "(%*"PRIu32", %*"PRIu32", %*"PRIu32")\n",
@@ -73,8 +72,7 @@ void dump_tri(Triangle const* const t, int const padding) {
     );
 }
 
-bool isValid_tri(Triangle const* const t) {
-    if (t == NULL)                      return 0;
+bool isValid_tri(Triangle const t[static const 1]) {
     if ((*t)[0] == 0)                   return 0;
     if ((*t)[1] == 0)                   return 0;
     if ((*t)[2] == 0)                   return 0;
@@ -85,7 +83,7 @@ bool isValid_tri(Triangle const* const t) {
     return 1;
 }
 
-uint32_t minSideLength_tri(Triangle const* const t) {
+uint32_t minSideLength_tri(Triangle const t[static const 1]) {
     DEBUG_ASSERT(isValid_tri(t))
 
     if ((*t)[0] < (*t)[1])
@@ -99,9 +97,9 @@ uint32_t minSideLength_tri(Triangle const* const t) {
         return (*t)[2];
 }
 
-uint32_t perimeter_tri(Triangle const* const t) {
-    DEBUG_ASSERT(isValid_tri(t))
+uint32_t perimeter_tri(Triangle const t[static const 1]) {
     uint32_t const perimeter = (*t)[0] + (*t)[1] + (*t)[2];
+    DEBUG_ASSERT(isValid_tri(t))
     DEBUG_ASSERT(perimeter > (*t)[0])
     DEBUG_ASSERT(perimeter > (*t)[1])
     DEBUG_ASSERT(perimeter > (*t)[2])

@@ -15,14 +15,14 @@
      * @param t1 A pointer to the constant first Triangle.
      * @param t2 A pointer to the constant second Triangle.
      */
-    bool areEqual_tri(Triangle const* const t1, Triangle const* const t2);
+    bool areEqual_tri(Triangle const t1[static const 1], Triangle const t2[static const 1]);
 
     /**
      * @brief Clones a Triangle.
      * @param clone A pointer to the clone Triangle.
      * @param original A pointer to the constant original Triangle.
      */
-    void clone_tri(Triangle* const clone, Triangle const* const original);
+    void clone_tri(Triangle clone[static const 1], Triangle const original[static const 1]);
 
     /**
      * @brief Compares two Triangle objects.
@@ -38,30 +38,30 @@
      * @param b Length of the second side of the Triangle.
      * @param c Length of the third side of the Triangle.
      */
-    void construct_tri(Triangle* const t, uint32_t const a, uint32_t const b, uint32_t const c);
+    void construct_tri(Triangle t[static const 1], uint32_t const a, uint32_t const b, uint32_t const c);
 
     /**
      * @brief Dumps a Triangle to the standard output.
      * @param t A pointer to the constant Triangle.
      * @param padding The left-padding amount.
      */
-    void dump_tri(Triangle const* const t, int const padding);
+    void dump_tri(Triangle const t[static const 1], int const padding);
 
     /**
      * @brief Checks if a Triangle is valid.
      * @param t A pointer to the constant Triangle.
      */
-    bool isValid_tri(Triangle const* const t);
+    bool isValid_tri(Triangle const t[static const 1]);
 
     /**
      * @brief Returns the minimum side length of a Triangle.
      * @param t A pointer to the constant Triangle.
      */
-    uint32_t minSideLength_tri(Triangle const* const t);
+    uint32_t minSideLength_tri(Triangle const t[static const 1]);
 
     /**
      * @brief Calculates the perimeter of a Triangle.
      * @param t A pointer to the constant Triangle.
      */
-    uint32_t perimeter_tri(Triangle const* const t);
+    uint32_t perimeter_tri(Triangle const t[static const 1]);
 #endif
