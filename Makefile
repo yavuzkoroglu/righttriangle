@@ -9,10 +9,10 @@ all: clean bin/righttriangle
 
 bin: ; mkdir bin
 
-bin/righttriangle:                      \
-    bin                                 \
-    ${OBJECTS}                          \
-    padkit/lib/libpadkit.a              \
+bin/righttriangle:                  \
+    bin                             \
+    ${OBJECTS}                      \
+    libpadkit                       \
 	; ${COMPILE} ${OBJECTS} padkit/lib/libpadkit.a -o bin/righttriangle
 
 clean: ; rm -rf obj bin *.gcno *.gcda *.gcov html latex
@@ -23,17 +23,20 @@ documentation: ; doxygen
 
 obj: ; mkdir obj
 
-obj/righttriangle.o: obj           		\
-    include/righttriangle.h             \
-    include/triangle.h                	\
-    libpadkit                           \
-    src/righttriangle.c                 \
+obj/righttriangle.o:                \
+    obj                             \
+    include/righttriangle.h         \
+    include/triangle.h              \
+    padkit/include/padkit/debug.h   \
+    padkit/include/padkit/stack.h   \
+    src/righttriangle.c             \
     ; ${COMPILE} ${INCLUDES} src/righttriangle.c -c -o obj/righttriangle.o
 
-obj/triangle.o: obj           			\
-    padkit/include/padkit/debug.h       \
-    include/triangle.h                	\
-    src/triangle.c                    	\
+obj/triangle.o:                     \
+    obj                             \
+    padkit/include/padkit/debug.h   \
+    include/triangle.h              \
+    src/triangle.c                  \
     ; ${COMPILE} ${INCLUDES} src/triangle.c -c -o obj/triangle.o
 
 objects: cleanobjects ${OBJECTS}
