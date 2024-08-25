@@ -1,6 +1,6 @@
 include padkit/compile.mk
 
-INCLUDES=-Iinclude -Ipadkit/include
+INCLUDE_DIRS=-Iinclude -Ipadkit/include
 OBJECTS=obj/righttriangle.o obj/triangle.o
 
 all: clean bin/righttriangle
@@ -11,8 +11,8 @@ bin: ; mkdir bin
 
 bin/righttriangle:                  \
     bin                             \
-    ${OBJECTS}                      \
     libpadkit                       \
+    ${OBJECTS}                      \
 	; ${COMPILE} ${OBJECTS} padkit/lib/libpadkit.a -o bin/righttriangle
 
 clean: ; rm -rf obj bin *.gcno *.gcda *.gcov html latex
@@ -30,14 +30,14 @@ obj/righttriangle.o:                \
     padkit/include/padkit/debug.h   \
     padkit/include/padkit/stack.h   \
     src/righttriangle.c             \
-    ; ${COMPILE} ${INCLUDES} src/righttriangle.c -c -o obj/righttriangle.o
+    ; ${COMPILE} ${INCLUDE_DIRS} src/righttriangle.c -c -o obj/righttriangle.o
 
 obj/triangle.o:                     \
     obj                             \
     padkit/include/padkit/debug.h   \
     include/triangle.h              \
     src/triangle.c                  \
-    ; ${COMPILE} ${INCLUDES} src/triangle.c -c -o obj/triangle.o
+    ; ${COMPILE} ${INCLUDE_DIRS} src/triangle.c -c -o obj/triangle.o
 
 objects: cleanobjects ${OBJECTS}
 
