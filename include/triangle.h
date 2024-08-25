@@ -12,56 +12,74 @@
 
     /**
      * @brief Checks if two Triangle objects are equivalent.
-     * @param t1 A pointer to the constant first Triangle.
-     * @param t2 A pointer to the constant second Triangle.
+     *
+     * @param[in] t1 A constant non-null pointer to a constant Triangle.
+     * @param[in] t2 A constant non-null pointer to a constant Triangle.
+     *
+     * @return A Boolean value.
      */
     bool areEqual_tri(Triangle const t1[static const 1], Triangle const t2[static const 1]);
 
     /**
      * @brief Clones a Triangle.
-     * @param clone A pointer to the clone Triangle.
-     * @param original A pointer to the constant original Triangle.
+     *
+     * @param[in,out]    clone A constant non-null pointer to a Triangle.
+     * @param[in]     original A constant non-null pointer to a constant Triangle.
      */
     void clone_tri(Triangle clone[static const 1], Triangle const original[static const 1]);
 
     /**
      * @brief Compares two Triangle objects.
-     * @param a A pointer to the constant first Triangle.
-     * @param b A pointer to the constant second Triangle.
+     *
+     * @param[in] a A pointer to a constant object.
+     * @param[in] b A pointer to a constant object.
+     *
+     * @return An integer (negative => a < b, positive => a > b, zero => a == b).
      */
     int compare_tri(void const* a, void const* b);
 
     /**
      * @brief Constructs a Triangle.
-     * @param t A pointer to the Triangle.
-     * @param a Length of the first side of the Triangle.
-     * @param b Length of the second side of the Triangle.
-     * @param c Length of the third side of the Triangle.
+     *
+     * @param[in,out] t A constant non-null pointer to a Triangle.
+     * @param[in]     a A constant 32-bit unsigned integer.
+     * @param[in]     b A constant 32-bit unsigned integer.
+     * @param[in]     c A constant 32-bit unsigned integer.
      */
     void construct_tri(Triangle t[static const 1], uint32_t const a, uint32_t const b, uint32_t const c);
 
     /**
      * @brief Dumps a Triangle to the standard output.
-     * @param t A pointer to the constant Triangle.
-     * @param padding The left-padding amount.
+     *
+     * @param[in]       t A constant non-null pointer to a constant Triangle.
+     * @param[in] padding A constant integer.
      */
     void dump_tri(Triangle const t[static const 1], int const padding);
 
     /**
      * @brief Checks if a Triangle is valid.
-     * @param t A pointer to the constant Triangle.
+     *
+     * @param[in] t A constant non-null pointer to a constant Triangle.
+     *
+     * @return A Boolean value.
      */
     bool isValid_tri(Triangle const t[static const 1]);
 
     /**
      * @brief Returns the minimum side length of a Triangle.
-     * @param t A pointer to the constant Triangle.
+     *
+     * @param[in] t A constant non-null pointer to a constant Triangle.
+     *
+     * @return A 32-bit unsigned integer.
      */
     uint32_t minSideLength_tri(Triangle const t[static const 1]);
 
     /**
      * @brief Calculates the perimeter of a Triangle.
-     * @param t A pointer to the constant Triangle.
+     *
+     * @param[in] t A constant non-null pointer to a constant Triangle.
+     *
+     * @return A 32-bit unsigned integer.
      */
     uint32_t perimeter_tri(Triangle const t[static const 1]);
 #endif
