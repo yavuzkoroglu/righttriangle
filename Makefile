@@ -3,16 +3,15 @@ include padkit/compile.mk
 INCLUDES=-Iinclude -Ipadkit/include
 OBJECTS=obj/righttriangle.o obj/triangle.o
 
-all: bin/righttriangle
+all: clean bin/righttriangle
 
-.PHONY: all clean cleanobjects documentation objects
+.PHONY: all clean cleanobjects documentation libpadkit objects
 
 bin: ; mkdir bin
 
 bin/righttriangle:                      \
     bin                                 \
-    objects                             \
-    padkit/compile.mk                   \
+    ${OBJECTS}                          \
     padkit/lib/libpadkit.a              \
 	; ${COMPILE} ${OBJECTS} padkit/lib/libpadkit.a -o bin/righttriangle
 
@@ -25,12 +24,9 @@ documentation: ; doxygen
 obj: ; mkdir obj
 
 obj/righttriangle.o: obj           		\
-    padkit/include/padkit/debug.h       \
-    padkit/include/padkit/memalloc.h    \
-    padkit/include/padkit/reallocate.h  \
-    padkit/include/padkit/stack.h       \
     include/righttriangle.h             \
     include/triangle.h                	\
+    libpadkit                           \
     src/righttriangle.c                 \
     ; ${COMPILE} ${INCLUDES} src/righttriangle.c -c -o obj/righttriangle.o
 
@@ -42,6 +38,4 @@ obj/triangle.o: obj           			\
 
 objects: cleanobjects ${OBJECTS}
 
-padkit/include/padkit.h: padkit; make -C padkit clean include/padkit.h
-
-padkit/lib/libpadkit.a: padkit; make -C padkit clean lib/libpadkit.a
+libpadkit: ; make -C padkit clean lib/libpadkit.a
