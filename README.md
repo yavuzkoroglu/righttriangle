@@ -1,4 +1,5 @@
 # RightTriangle
+
 Generates all the integer right triangles with a minimum side length less than or equal to `<min_side_limit>`.
 
 ## Usage
