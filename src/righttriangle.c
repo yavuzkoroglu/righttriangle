@@ -100,7 +100,7 @@ int main(int argc, char* argv[]) {
 
     if (argc < 2) {
         printf("  Usage: %s <min_side_limit>\n\n", argv[0]);
-        return EXIT_SUCCESS;
+        return EXIT_FAILURE;
     }
 
     if (sscanf(argv[1], "%"SCNu32, &min_side_limit) != 1) {
