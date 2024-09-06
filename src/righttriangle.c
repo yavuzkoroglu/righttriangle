@@ -3,38 +3,37 @@
  * @brief Implements RightTriangle functions.
  * @author Yavuz Koroglu
  */
+#include <assert.h>
 #include <inttypes.h>
-#include "padkit/debug.h"
+#include <stdlib.h>
 #include "padkit/stack.h"
 #include "righttriangle.h"
 
 bool areEqual_rtri(RightTriangle const t1[static const 1], RightTriangle const t2[static const 1]) {
-    DEBUG_ASSERT(isValid_rtri(t1))
-    DEBUG_ASSERT(isValid_rtri(t2))
+    assert(isValid_rtri(t1));
+    assert(isValid_rtri(t2));
 
     return areEqual_tri(t1, t2);
 }
 
 uint64_t area_rtri(RightTriangle const t[static const 1]) {
-    DEBUG_ASSERT(isValid_rtri(t))
+    assert(isValid_rtri(t));
 
     return ((uint64_t)(*t)[0] * (uint64_t)(*t)[1]) >> 1;
 }
 
 void clone_rtri(RightTriangle clone[static const 1], RightTriangle const original[static const 1]) {
-    DEBUG_ASSERT(isValid_rtri(original))
+    assert(isValid_rtri(original));
 
     clone_tri(clone, original);
-
-    DEBUG_ASSERT(isValid_rtri(clone))
 }
 
 int compare_rtri(void const* a, void const* b) {
     RightTriangle const* const t1 = (RightTriangle const*)a;
     RightTriangle const* const t2 = (RightTriangle const*)b;
 
-    DEBUG_ASSERT(isValid_rtri(t1))
-    DEBUG_ASSERT(isValid_rtri(t2))
+    assert(isValid_rtri(t1));
+    assert(isValid_rtri(t2));
 
     if ((*t1)[0] < (*t2)[0]) {
         return -1;
@@ -53,13 +52,11 @@ void construct_rtri(
     RightTriangle t[static const 1],
     uint32_t const a, uint32_t const b, uint32_t const c
 ) {
-    DEBUG_ERROR_IF(a == 0)
-    DEBUG_ERROR_IF(b == 0)
-    DEBUG_ERROR_IF(c == 0)
+    assert(a > 0);
+    assert(b > 0);
+    assert(c > 0);
 
     construct_tri(t, a, b, c);
-
-    DEBUG_ASSERT(isValid_rtri(t))
 }
 
 static int countDigits(uint32_t x) {
@@ -72,7 +69,7 @@ static int countDigits(uint32_t x) {
 }
 
 void dump_rtri(RightTriangle const t[static const 1], int const padding) {
-    DEBUG_ASSERT(isValid_rtri(t))
+    assert(isValid_rtri(t));
     dump_tri(t, padding);
 }
 
@@ -114,23 +111,24 @@ int main(int argc, char* argv[]) {
 
     constructEmpty_stack(stack, sizeof(RightTriangle), STACK_RECOMMENDED_INITIAL_CAP);
 
-    construct_rtri(pushZeros_stack(stack), 3, 4, 5);
+    construct_rtri(pushZeros_stack(stack, 1), 3, 4, 5);
     for (uint32_t i = 0; i < stack->size; i++) {
-        RightTriangle const* const t = get_stack(stack, i);
-        DEBUG_ASSERT(isValid_rtri(t))
+        RightTriangle const* const t = get_alist(stack, i);
+        assert(isValid_rtri(t));
 
         clone_rtri(copy, t);
 
         for (int32_t k = RT_MATRIX_A; k <= RT_MATRIX_C; k++) {
-            RightTriangle* const next = pushZeros_stack(stack);
+            RightTriangle* const next = pushZeros_stack(stack, 1);
             next_rtri(next, copy, k);
-            if (minSideLength_rtri(next) > min_side_limit) pop_stack(stack);
+            if (minSideLength_rtri(next) > min_side_limit)
+                pop_stack(stack, 1);
         }
     }
 
     for (uint32_t i = stack->size - 1; i != UINT32_MAX; i--) {
-        RightTriangle* const t = get_stack(stack, i);
-        DEBUG_ASSERT(isValid_rtri(t))
+        RightTriangle* const t = get_alist(stack, i);
+        assert(isValid_rtri(t));
 
         if ((*t)[0] > (*t)[1]) {
             uint32_t const tmp  = (*t)[0];
@@ -144,19 +142,19 @@ int main(int argc, char* argv[]) {
             int32_t k = 2;
             RightTriangle* next;
             do {
-                DEBUG_ASSERT(k < INT32_MAX)
-                next = pushZeros_stack(stack);
+                assert(k < INT32_MAX);
+                next = pushZeros_stack(stack, 1);
                 next_rtri(next, copy, k++);
             } while ((*next)[0] <= min_side_limit);
         }
-        pop_stack(stack);
+        pop_stack(stack, 1);
     }
 
-    qsort(stack->array, stack->size, sizeof(RightTriangle), compare_rtri);
+    qsort_alist(stack, compare_rtri);
 
     for (uint32_t i = 0; i < stack->size; i++) {
-        RightTriangle const* const t = get_stack(stack, i);
-        DEBUG_ASSERT(isValid_rtri(t))
+        RightTriangle const* const t = get_alist(stack, i);
+        assert(isValid_rtri(t));
 
         if ((*t)[2] > max_side_len)
             max_side_len = (*t)[2];
@@ -166,8 +164,8 @@ int main(int argc, char* argv[]) {
         int const n = countDigits(stack->size);
         int const m = countDigits(max_side_len);
         for (uint32_t i = 0; i < stack->size; i++) {
-            RightTriangle const* const t = get_stack(stack, i);
-            DEBUG_ASSERT(isValid_rtri(t))
+            RightTriangle const* const t = get_alist(stack, i);
+            assert(isValid_rtri(t));
 
             printf(" %*"PRIu32": ", n, i + 1);
             dump_rtri(t, m);
@@ -181,7 +179,7 @@ int main(int argc, char* argv[]) {
 }
 
 uint32_t minSideLength_rtri(RightTriangle const t[static const 1]) {
-    DEBUG_ASSERT(isValid_rtri(t))
+    assert(isValid_rtri(t));
 
     if ((*t)[0] < (*t)[1])
         return (*t)[0];
@@ -190,8 +188,8 @@ uint32_t minSideLength_rtri(RightTriangle const t[static const 1]) {
 }
 
 void next_rtri(RightTriangle next[static const 1], RightTriangle const t[static const 1], int32_t const k) {
-    DEBUG_ASSERT(isValid_rtri(t))
-    DEBUG_ERROR_IF(k < RT_MATRIX_A)
+    assert(isValid_rtri(t));
+    assert(k >= RT_MATRIX_A);
 
     switch (k) {
         case RT_MATRIX_A:
@@ -214,11 +212,9 @@ void next_rtri(RightTriangle next[static const 1], RightTriangle const t[static 
             (*next)[1] = (uint32_t)k * (*t)[1];
             (*next)[2] = (uint32_t)k * (*t)[2];
     }
-
-    DEBUG_ASSERT(isValid_rtri(next))
 }
 
 uint32_t perimeter_rtri(RightTriangle const t[static const 1]) {
-    DEBUG_ASSERT(isValid_rtri(t))
+    assert(isValid_rtri(t));
     return perimeter_tri(t);
 }

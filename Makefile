@@ -27,15 +27,14 @@ obj/righttriangle.o:                \
     obj                             \
     include/righttriangle.h         \
     include/triangle.h              \
-    padkit/include/padkit/debug.h   \
     padkit/include/padkit/stack.h   \
     src/righttriangle.c             \
     ; ${COMPILE} ${INCLUDE_DIRS} src/righttriangle.c -c -o obj/righttriangle.o
 
 obj/triangle.o:                     \
     obj                             \
-    padkit/include/padkit/debug.h   \
     include/triangle.h              \
+    padkit/include/padkit/overlap.h \
     src/triangle.c                  \
     ; ${COMPILE} ${INCLUDE_DIRS} src/triangle.c -c -o obj/triangle.o
 
