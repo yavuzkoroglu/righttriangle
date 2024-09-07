@@ -7,7 +7,7 @@ default: bin/righttriangle
 
 .FORCE:
 
-.PHONY: .FORCE clean
+.PHONY: .FORCE clean default
 
 bin: ; mkdir bin
 
