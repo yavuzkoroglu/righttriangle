@@ -26,7 +26,7 @@
      * @param[in,out]    clone A constant non-null pointer to a Triangle.
      * @param[in]     original A constant non-null pointer to a constant Triangle.
      */
-    void clone_tri(Triangle clone[static const 1], Triangle const original[static const 1]);
+    void clone_tri(Triangle clone[static const restrict 1], Triangle const original[static const restrict 1]);
 
     /**
      * @brief Compares two Triangle objects.
