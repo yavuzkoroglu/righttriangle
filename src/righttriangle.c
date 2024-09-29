@@ -6,7 +6,8 @@
 #include <assert.h>
 #include <inttypes.h>
 #include <stdlib.h>
-#include "padkit/stack.h"
+#include "padkit/arraylist.h"
+#include "padkit/repeat.h"
 #include "righttriangle.h"
 
 bool areEqual_rtri(RightTriangle const t1[static const 1], RightTriangle const t2[static const 1]) {
@@ -87,9 +88,12 @@ bool isValid_rtri(RightTriangle const t[static const 1]) {
 }
 
 int main(int argc, char* argv[]) {
-    RightTriangle   copy[1];
-    Stack           stack[1];
+    RightTriangle copy[1];
+    RightTriangle* t;
+    RightTriangle* next;
+    int n, m;
 
+    ArrayList stack[1]      = { NOT_AN_ALIST };
     uint32_t min_side_limit = 0;
     uint32_t max_side_len   = 0;
 
@@ -109,25 +113,27 @@ int main(int argc, char* argv[]) {
         return EXIT_SUCCESS;
     }
 
-    constructEmpty_stack(stack, sizeof(RightTriangle), STACK_RECOMMENDED_INITIAL_CAP);
+    construct_alist(stack, sizeof(RightTriangle), ALIST_RECOMMENDED_INITIAL_CAP);
 
-    construct_rtri(pushZeros_stack(stack, 1), 3, 4, 5);
-    for (uint32_t i = 0; i < stack->size; i++) {
-        RightTriangle const* const t = get_alist(stack, i);
+    t = pushZerosTop_alist(stack);
+    construct_rtri(t, 3, 4, 5);
+    for (uint32_t i = 0; i < stack->len; i++, t++) {
         assert(isValid_rtri(t));
 
         clone_rtri(copy, t);
 
         for (int32_t k = RT_MATRIX_A; k <= RT_MATRIX_C; k++) {
-            RightTriangle* const next = pushZeros_stack(stack, 1);
+            next = pushZerosTop_alist(stack);
             next_rtri(next, copy, k);
             if (minSideLength_rtri(next) > min_side_limit)
-                pop_stack(stack, 1);
+                popTop_alist(stack);
         }
     }
 
-    for (uint32_t i = stack->size - 1; i != UINT32_MAX; i--) {
-        RightTriangle* const t = get_alist(stack, i);
+    t = peekTop_alist(stack);
+    for (uint32_t i = stack->len - 1; i != UINT32_MAX; i--, t--) {
+        int32_t k = 2;
+
         assert(isValid_rtri(t));
 
         if ((*t)[0] > (*t)[1]) {
@@ -138,41 +144,37 @@ int main(int argc, char* argv[]) {
 
         clone_rtri(copy, t);
 
-        {
-            int32_t k = 2;
-            RightTriangle* next;
-            do {
-                assert(k < INT32_MAX);
-                next = pushZeros_stack(stack, 1);
-                next_rtri(next, copy, k++);
-            } while ((*next)[0] <= min_side_limit);
-        }
-        pop_stack(stack, 1);
+        do {
+            assert(k < INT32_MAX);
+            next = pushZerosTop_alist(stack);
+            next_rtri(next, copy, k++);
+        } while ((*next)[0] <= min_side_limit);
+        popTop_alist(stack);
     }
 
     qsort_alist(stack, compare_rtri);
 
-    for (uint32_t i = 0; i < stack->size; i++) {
-        RightTriangle const* const t = get_alist(stack, i);
+    t = peekBottom_alist(stack);
+    REPEAT(stack->len) {
         assert(isValid_rtri(t));
 
         if ((*t)[2] > max_side_len)
             max_side_len = (*t)[2];
+
+        t++;
     }
 
-    {
-        int const n = countDigits(stack->size);
-        int const m = countDigits(max_side_len);
-        for (uint32_t i = 0; i < stack->size; i++) {
-            RightTriangle const* const t = get_alist(stack, i);
-            assert(isValid_rtri(t));
+    n = countDigits(stack->len);
+    m = countDigits(max_side_len);
+    t = peekBottom_alist(stack);
+    for (uint32_t i = 0; i < stack->len; i++, t++) {
+        assert(isValid_rtri(t));
 
-            printf(" %*"PRIu32": ", n, i + 1);
-            dump_rtri(t, m);
-        }
+        printf(" %*"PRIu32": ", n, i + 1);
+        dump_rtri(t, m);
     }
 
-    free_stack(stack);
+    destruct_alist(stack);
 
     puts("");
     return EXIT_SUCCESS;
