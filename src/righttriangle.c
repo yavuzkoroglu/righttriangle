@@ -91,11 +91,11 @@ int main(int argc, char* argv[]) {
     RightTriangle copy[1];
     RightTriangle* t;
     RightTriangle* next;
+    uint32_t max_side_len;
+    uint32_t min_side_limit;
+    int32_t k;
     int n, m;
-
-    ArrayList stack[1]      = { NOT_AN_ALIST };
-    uint32_t min_side_limit = 0;
-    uint32_t max_side_len   = 0;
+    ArrayList stack[1];
 
     puts("");
 
@@ -115,25 +115,24 @@ int main(int argc, char* argv[]) {
 
     construct_alist(stack, sizeof(RightTriangle), ALIST_RECOMMENDED_INITIAL_CAP);
 
-    t = pushZerosTop_alist(stack);
+    t = pushIndeterminate_alist(stack);
     construct_rtri(t, 3, 4, 5);
-    for (uint32_t i = 0; i < stack->len; i++, t++) {
+    for (uint32_t i = 0; i < stack->len; i++) {
+        t = get_alist(stack, i);
         assert(isValid_rtri(t));
 
         clone_rtri(copy, t);
 
-        for (int32_t k = RT_MATRIX_A; k <= RT_MATRIX_C; k++) {
-            next = pushZerosTop_alist(stack);
+        for (k = RT_MATRIX_A; k <= RT_MATRIX_C; k++) {
+            next = pushIndeterminate_alist(stack);
             next_rtri(next, copy, k);
             if (minSideLength_rtri(next) > min_side_limit)
-                popTop_alist(stack);
+                pop_alist(stack);
         }
     }
 
-    t = peekTop_alist(stack);
-    for (uint32_t i = stack->len - 1; i != UINT32_MAX; i--, t--) {
-        int32_t k = 2;
-
+    for (uint32_t i = stack->len - 1; i != UINT32_MAX; i--) {
+        t = get_alist(stack, i);
         assert(isValid_rtri(t));
 
         if ((*t)[0] > (*t)[1]) {
@@ -144,24 +143,26 @@ int main(int argc, char* argv[]) {
 
         clone_rtri(copy, t);
 
+        k = 2;
         do {
             assert(k < INT32_MAX);
-            next = pushZerosTop_alist(stack);
+            next = pushIndeterminate_alist(stack);
             next_rtri(next, copy, k++);
         } while ((*next)[0] <= min_side_limit);
-        popTop_alist(stack);
+        pop_alist(stack);
     }
 
     qsort_alist(stack, compare_rtri);
 
-    t = peekBottom_alist(stack);
+    max_side_len = 0;
+    t = peek_alist(stack);
     REPEAT(stack->len) {
         assert(isValid_rtri(t));
 
         if ((*t)[2] > max_side_len)
             max_side_len = (*t)[2];
 
-        t++;
+        t--;
     }
 
     n = countDigits(stack->len);
