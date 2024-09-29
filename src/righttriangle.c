@@ -88,6 +88,7 @@ bool isValid_rtri(RightTriangle const t[static const 1]) {
 }
 
 int main(int argc, char* argv[]) {
+    ArrayList stack[1];
     RightTriangle copy[1];
     RightTriangle* t;
     RightTriangle* next;
@@ -95,13 +96,12 @@ int main(int argc, char* argv[]) {
     uint32_t min_side_limit;
     int32_t k;
     int n, m;
-    ArrayList stack[1];
 
     puts("");
 
     if (argc < 2) {
         printf("  Usage: %s <min_side_limit>\n\n", argv[0]);
-        return EXIT_FAILURE;
+        return EXIT_SUCCESS;
     }
 
     if (sscanf(argv[1], "%"SCNu32, &min_side_limit) != 1) {
@@ -109,9 +109,8 @@ int main(int argc, char* argv[]) {
         return EXIT_FAILURE;
     }
 
-    if (min_side_limit < 3) {
+    if (min_side_limit < 3)
         return EXIT_SUCCESS;
-    }
 
     construct_alist(stack, sizeof(RightTriangle), ALIST_RECOMMENDED_INITIAL_CAP);
 
