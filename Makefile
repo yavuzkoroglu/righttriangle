@@ -33,6 +33,7 @@ obj/triangle.o: .FORCE                  \
     obj                                 \
     include/triangle.h                  \
     padkit/include/padkit/overlap.h     \
+    padkit/include/padkit/unused.h      \
     src/triangle.c                      \
     ; ${COMPILE} ${INCLUDE_DIRS} src/triangle.c -c -o obj/triangle.o
 

@@ -1,85 +1,49 @@
-/**
- * @file triangle.h
- * @brief Defines Triangle and related functions.
- * @author Yavuz Koroglu
- */
 #ifndef TRIANGLE_H
     #define TRIANGLE_H
+    #include <stdarg.h>
     #include <stdbool.h>
     #include <stdint.h>
 
-    typedef uint32_t Triangle[3];
+    #define ITR_NEXT_TRI(itr)   itr += sizeof(Triangle) / sizeof(uint32_t)
+    #define ITR_PREV_TRI(itr)   itr -= sizeof(Triangle) / sizeof(uint32_t)
 
-    /**
-     * @brief Checks if two Triangle objects are equivalent.
-     *
-     * @param[in] t1 A constant non-null pointer to a constant Triangle.
-     * @param[in] t2 A constant non-null pointer to a constant Triangle.
-     *
-     * @return A Boolean value.
-     */
-    bool areEqual_tri(Triangle const t1[static const 1], Triangle const t2[static const 1]);
+    typedef uint32_t        Triangle[3];
+    typedef uint32_t*       TriangleItr;
+    typedef uint32_t const* TriangleConstItr;
 
-    /**
-     * @brief Clones a Triangle.
-     *
-     * @param[in,out]    clone A constant non-null pointer to a Triangle.
-     * @param[in]     original A constant non-null pointer to a constant Triangle.
-     */
-    void clone_tri(Triangle clone[static const restrict 1], Triangle const original[static const restrict 1]);
+    bool areEqual_tri(
+        Triangle const t1,
+        Triangle const t2
+    );
 
-    /**
-     * @brief Compares two Triangle objects.
-     *
-     * @param[in] a A pointer to a constant object.
-     * @param[in] b A pointer to a constant object.
-     *
-     * @return An integer (negative => a < b, positive => a > b, zero => a == b).
-     */
-    int compare_tri(void const* a, void const* b);
+    void clone_tri(
+        Triangle clone,
+        Triangle const original
+    );
 
-    /**
-     * @brief Constructs a Triangle.
-     *
-     * @param[in,out] t A constant non-null pointer to a Triangle.
-     * @param[in]     a A constant 32-bit unsigned integer.
-     * @param[in]     b A constant 32-bit unsigned integer.
-     * @param[in]     c A constant 32-bit unsigned integer.
-     */
-    void construct_tri(Triangle t[static const 1], uint32_t const a, uint32_t const b, uint32_t const c);
+    int cmp_tri(
+        void const* a,
+        void const* b
+    );
 
-    /**
-     * @brief Dumps a Triangle to the standard output.
-     *
-     * @param[in]       t A constant non-null pointer to a constant Triangle.
-     * @param[in] padding A constant integer.
-     */
-    void dump_tri(Triangle const t[static const 1], int const padding);
+    void construct_tri(void* const p_t, ...);
 
-    /**
-     * @brief Checks if a Triangle is valid.
-     *
-     * @param[in] t A constant non-null pointer to a constant Triangle.
-     *
-     * @return A Boolean value.
-     */
-    bool isValid_tri(Triangle const t[static const 1]);
+    void dump_tri(
+        FILE* const stream,
+        Triangle const t,
+        int const padding
+    );
 
-    /**
-     * @brief Returns the minimum side length of a Triangle.
-     *
-     * @param[in] t A constant non-null pointer to a constant Triangle.
-     *
-     * @return A 32-bit unsigned integer.
-     */
-    uint32_t minSideLength_tri(Triangle const t[static const 1]);
+    bool isAllocated_tri(void const* const p_t);
 
-    /**
-     * @brief Calculates the perimeter of a Triangle.
-     *
-     * @param[in] t A constant non-null pointer to a constant Triangle.
-     *
-     * @return A 32-bit unsigned integer.
-     */
-    uint32_t perimeter_tri(Triangle const t[static const 1]);
+    bool isValid_tri(void const* const p_t);
+
+    uint32_t minSideLength_tri(Triangle const t);
+
+    uint32_t perimeter_tri(Triangle const t);
+
+    void vconstruct_tri(
+        void* const p_t,
+        va_list args
+    );
 #endif
