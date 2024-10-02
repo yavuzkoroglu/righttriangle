@@ -1,8 +1,3 @@
-/**
- * @file righttriangle.c
- * @brief Implements RightTriangle functions.
- * @author Yavuz Koroglu
- */
 #include <assert.h>
 #include <inttypes.h>
 #include <stdlib.h>
