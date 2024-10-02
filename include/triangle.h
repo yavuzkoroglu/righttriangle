@@ -7,6 +7,8 @@
     #define ITR_NEXT_TRI(itr)   itr += sizeof(Triangle) / sizeof(uint32_t)
     #define ITR_PREV_TRI(itr)   itr -= sizeof(Triangle) / sizeof(uint32_t)
 
+    #define NOT_A_TRIANGLE      { 0, 0, 0 }
+
     typedef uint32_t        Triangle[3];
     typedef uint32_t*       TriangleItr;
     typedef uint32_t const* TriangleConstItr;

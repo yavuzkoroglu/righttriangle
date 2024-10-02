@@ -5,6 +5,8 @@
     #define ITR_NEXT_RTRI(itr)  ITR_NEXT_TRI(itr)
     #define ITR_PREV_RTRI(itr)  ITR_PREV_TRI(itr)
 
+    #define NOT_A_RIGHTTRIANGLE { 0, 0, 0 }
+
     typedef Triangle            RightTriangle;
     typedef TriangleItr         RightTriangleItr;
     typedef TriangleConstItr    RightTriangleConstItr;
